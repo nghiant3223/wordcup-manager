@@ -1,5 +1,10 @@
 package uni.hcmut.wcmanager.entities;
 
+import uni.hcmut.wcmanager.enums.MatchType;
+import uni.hcmut.wcmanager.enums.RoundName;
+import uni.hcmut.wcmanager.randomizers.EventGenerator;
+import uni.hcmut.wcmanager.utils.MatchUtils;
+
 import javax.persistence.*;
 
 @Entity
@@ -31,30 +36,77 @@ public class Match {
     @Column(name = "winner_id")
     private int winnerId;
 
+    @Column(name = "round_id")
+    private int roundId;
+
+    public Match() {
+
+    }
+
     public void prepareSqlEntity() {
         this.homeId = this.homeTeam.getTeam().getId();
         this.awayId = this.awayTeam.getTeam().getId();
-        // TODO: Retrieve match result
+        this.roundId = this.roundName.getId();
+        // TODO: Prepare record to be saved on database
     }
 
+    private transient RoundName roundName;
+    private transient MatchType matchType;
     private transient TeamInMatch homeTeam;
     private transient TeamInMatch awayTeam;
-    private transient Event[] events;
+    private transient boolean isFinished;
 
-    public void start() {
-        // TODO: Initialization events
+    public Match(Team home, Team away, RoundName roundName) {
+        this.isFinished = false;
+
+        this.roundName = roundName;
+        this.matchType = MatchUtils.getType(roundName);
+
+        homeTeam = new TeamInMatch(home);
+        awayTeam = new TeamInMatch(away);
     }
 
-    public void finish() {
-        // TODO: Determine the winner base on match's events
+    public void start(EventGenerator eventGenerator) {
+        eventGenerator.startMatch(this);
+        finish();
+    }
+
+    private void finish() {
+        System.out.println(String.format("%s %d - %d %s",
+                homeTeam.getTeam().getName(), homeTeam.getGoalFor(),
+                awayTeam.getGoalFor(), awayTeam.getTeam().getName()));
     }
 
     public TeamInMatch getWinner() {
         return null;
     }
 
-    public void handleEvent(Event e) {
 
+    public void handleEvent(Event e) {
+        e.handle();
     }
 
+    public MatchType getMatchType() {
+        return matchType;
+    }
+
+    public void setMatchType(MatchType matchType) {
+        this.matchType = matchType;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
+    public TeamInMatch getHomeTeam() {
+        return homeTeam;
+    }
+
+    public TeamInMatch getAwayTeam() {
+        return awayTeam;
+    }
 }

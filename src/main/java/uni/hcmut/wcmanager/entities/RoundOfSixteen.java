@@ -4,7 +4,7 @@ import uni.hcmut.wcmanager.enums.RoundName;
 
 import java.util.Map;
 
-public class RoundOfSixteen implements Round {
+public class RoundOfSixteen implements IRound {
     @Override
     public void run() {
 

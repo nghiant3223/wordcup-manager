@@ -1,13 +1,16 @@
 package uni.hcmut.wcmanager.entities;
 
-import java.util.Set;
+import uni.hcmut.wcmanager.randomizers.TeamRandomizer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamInMatch {
     private Team team;
 
-    private Set<PlayerInMatch> startingPlayers;
-    private Set<PlayerInMatch> substitutePlayers;
-    private Set<PlayerInMatch> sentOffPlayers;
+    private List<PlayerInMatch> startingPlayers;
+    private List<PlayerInMatch> substitutePlayers;
+    private List<PlayerInMatch> sentOffPlayers;
 
     private int remainingSubstitution;
     private int goalFor;
@@ -20,11 +23,25 @@ public class TeamInMatch {
         this.goalAgainst = 0;
         this.remainingSubstitution = 3;
 
-        // TODO: Init startingPlayers, substitutePlayers, sentOffPlayers
+        this.sentOffPlayers = new ArrayList<>();
+        this.startingPlayers = new ArrayList<>();
+        this.substitutePlayers = new ArrayList<>();
+
+        List<ArrayList<Player>> lineup = TeamRandomizer.createLineup(team);
+
+        for (Player p : lineup.get(0)) {
+            PlayerInMatch pim = new PlayerInMatch(p, this);
+            this.startingPlayers.add(pim);
+        }
+
+        for (Player p : lineup.get(1)) {
+            PlayerInMatch pim = new PlayerInMatch(p, this);
+            this.substitutePlayers.add(pim);
+        }
     }
 
     public Team getTeam() {
-        return this.team;
+        return team;
     }
 
     public void substitute(PlayerInMatch out, PlayerInMatch in) {
@@ -33,14 +50,34 @@ public class TeamInMatch {
     }
 
     public boolean isAbleToSubstitute() {
-        return this.remainingSubstitution > 0;
+        return remainingSubstitution > 0;
     }
 
-    public void score(Player player) {
-        this.goalFor = this.goalFor + 1;
+    public void score() {
+        goalFor = goalFor + 1;
     }
 
-    public void concede(Player player) {
-        this.goalAgainst = this.goalAgainst + 1;
+    public void concede() {
+        goalAgainst = goalAgainst + 1;
+    }
+
+    public List<PlayerInMatch> getStartingPlayers() {
+        return startingPlayers;
+    }
+
+    public List<PlayerInMatch> getSubstitutePlayers() {
+        return substitutePlayers;
+    }
+
+    public List<PlayerInMatch> getSentOffPlayers() {
+        return sentOffPlayers;
+    }
+
+    public int getGoalFor() {
+        return goalFor;
+    }
+
+    public int getGoalAgainst() {
+        return goalAgainst;
     }
 }

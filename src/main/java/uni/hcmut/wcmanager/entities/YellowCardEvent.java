@@ -1,9 +1,7 @@
 package uni.hcmut.wcmanager.entities;
 
-import java.util.Date;
-
 public class YellowCardEvent extends Event {
-    public YellowCardEvent(Match match, PlayerInMatch actor, Date at) {
+    public YellowCardEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
     }
 

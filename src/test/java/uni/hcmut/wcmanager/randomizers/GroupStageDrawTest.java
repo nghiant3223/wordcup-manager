@@ -1,18 +1,15 @@
 package uni.hcmut.wcmanager.randomizers;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import uni.hcmut.wcmanager.entities.Group;
 import uni.hcmut.wcmanager.entities.Team;
-import uni.hcmut.wcmanager.enums.GroupName;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 public class GroupStageDrawTest {
     private List<Team> teams;
@@ -30,14 +27,14 @@ public class GroupStageDrawTest {
     @Test
     public void shouldReturn32Draws() {
         List<Integer> draws = GroupStageDraw.getDraws();
-        assertEquals(draws.size(), 32);
+        Assert.assertEquals(draws.size(), 32);
     }
 
     @Test
     public void shouldGroupHas4Teams() {
         List<Group> groups = GroupStageDraw.draw(teams);
         for (Group g : groups) {
-            assertEquals(g.getTeams().size(), 4);
+            Assert.assertEquals(g.getTeams().size(), 4);
         }
     }
 
@@ -56,7 +53,7 @@ public class GroupStageDrawTest {
             for (Team t : g.getTeams()) {
 
                 if (teamNames.contains(t)) {
-                    fail("None unique team");
+                    Assert.fail("None unique team");
                 }
 
                 teamNames.add(t);

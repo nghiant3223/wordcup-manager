@@ -1,9 +1,7 @@
 package uni.hcmut.wcmanager.entities;
 
-import java.util.Date;
-
 public class RedCardEvent extends Event {
-    public RedCardEvent(Match match, PlayerInMatch actor, Date at) {
+    public RedCardEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
     }
 

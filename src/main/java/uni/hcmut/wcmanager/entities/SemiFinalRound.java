@@ -4,7 +4,7 @@ import uni.hcmut.wcmanager.enums.RoundName;
 
 import java.util.Map;
 
-public class SemiFinalRound implements Round {
+public class SemiFinalRound implements IRound {
     @Override
     public void run() {
 

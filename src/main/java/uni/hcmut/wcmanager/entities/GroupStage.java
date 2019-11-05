@@ -2,26 +2,37 @@ package uni.hcmut.wcmanager.entities;
 
 import uni.hcmut.wcmanager.enums.RoundName;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GroupStage implements Round {
+public class GroupStage implements IRound {
     private List<Group> groups;
     private RoundName name;
 
     public GroupStage(List<Group> groups) {
         this.groups = groups;
-        this.name = RoundName.GROUP_STAGE;
     }
 
     @Override
     public void run() {
-
+        for (Group group : groups) {
+            System.out.printf("===== Group %s started =====\n", group.getName());
+            group.run();
+            System.out.printf("=====Group %s ended=====\n\n", group.getName());
+        }
     }
 
     @Override
     public Map<Integer, Team[]> getResult() {
-        return null;
+        Map<Integer, Team[]> result = new HashMap<>();
+
+        for (Group g : groups) {
+            Team[] twoBestTeams = {g.getTeamByPlace(0), g.getTeamByPlace(1)};
+            result.put(g.getName().getId(), twoBestTeams);
+        }
+
+        return result;
     }
 
     @Override

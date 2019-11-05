@@ -23,12 +23,11 @@ public class Tournament {
 
         String hql = "FROM Team";
         Query query = session.createQuery(hql);
-
-        teams = (List<Team>) query.list();
+        teams = query.list();
     }
 
     public void start() {
-        Round currentRound;
+        IRound currentRound;
 
         List<Group> groups = GroupStageDraw.draw(teams);
         currentRound = new GroupStage(groups);
@@ -37,7 +36,7 @@ public class Tournament {
     }
 
     public void finish() {
-        // TODO: Persist match, team performance in group, player into database
+        System.out.println("Tournament has ended! Thanks for watching ❤");
     }
 
     private Player getTopScorer() {

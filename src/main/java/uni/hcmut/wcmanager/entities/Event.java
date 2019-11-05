@@ -3,11 +3,11 @@ package uni.hcmut.wcmanager.entities;
 import java.util.Date;
 
 public abstract class Event {
-    private Date at;
-    private PlayerInMatch actor;
-    private Match match;
+    protected int at;
+    protected PlayerInMatch actor;
+    protected Match match;
 
-    public Event(Match match, PlayerInMatch actor, Date at) {
+    public Event(Match match, PlayerInMatch actor, int at) {
         this.match = match;
         this.actor = actor;
         this.at = at;
