@@ -2,6 +2,7 @@ package uni.hcmut.wcmanager;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import uni.hcmut.wcmanager.runners.Tournament;
 import uni.hcmut.wcmanager.utils.HibernateUtils;
 
 public class App {

@@ -4,11 +4,11 @@ import uni.hcmut.wcmanager.enums.MatchType;
 import uni.hcmut.wcmanager.enums.RoundName;
 
 public class MatchUtils {
-    static int getMatchType(int roundName) {
-        if (roundName > RoundName.GROUP_STAGE) {
-            return MatchType.KNOCKOUT;
+    static MatchType getMatchType(RoundName roundName) {
+        if (roundName == RoundName.GROUP_STAGE) {
+            return MatchType.DRAWABLE;
         }
 
-        return MatchType.DRAWABLE;
+        return MatchType.KNOCKOUT;
     }
 }

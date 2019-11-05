@@ -10,6 +10,7 @@ public class SemiFinalRound implements Round {
 
     }
 
+    @Override
     public Map<Integer, Team[]> getResult() {
         return null;
     }

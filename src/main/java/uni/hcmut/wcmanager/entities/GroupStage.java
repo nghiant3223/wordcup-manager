@@ -2,15 +2,15 @@ package uni.hcmut.wcmanager.entities;
 
 import uni.hcmut.wcmanager.enums.RoundName;
 
+import java.util.List;
 import java.util.Map;
 
 public class GroupStage implements Round {
-    private Group[] groups;
+    private List<Group> groups;
     private RoundName name;
 
-    public GroupStage(Group[] groups) {
+    public GroupStage(List<Group> groups) {
         this.groups = groups;
-
         this.name = RoundName.GROUP_STAGE;
     }
 
@@ -19,6 +19,7 @@ public class GroupStage implements Round {
 
     }
 
+    @Override
     public Map<Integer, Team[]> getResult() {
         return null;
     }
