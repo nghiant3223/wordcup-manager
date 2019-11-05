@@ -44,7 +44,7 @@ public class GroupStageDraw {
             int draw = draws.get(index);
 
             Group group = groups.get(draw / 4);
-            group.getTeams().add(team);
+            group.addTeam(team);
 
             draws.remove(index);
         }

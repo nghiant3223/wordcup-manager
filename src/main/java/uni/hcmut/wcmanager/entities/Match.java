@@ -109,4 +109,12 @@ public class Match {
     public TeamInMatch getAwayTeam() {
         return awayTeam;
     }
+
+    public TeamInMatch getOpponentTeam(PlayerInMatch player) {
+        if (player.getTeamInMatch() == homeTeam) {
+            return awayTeam;
+        }
+
+        return homeTeam;
+    }
 }

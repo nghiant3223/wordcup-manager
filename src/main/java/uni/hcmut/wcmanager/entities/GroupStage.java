@@ -19,7 +19,11 @@ public class GroupStage implements IRound {
         for (Group group : groups) {
             System.out.printf("===== Group %s started =====\n", group.getName());
             group.run();
-            System.out.printf("=====Group %s ended=====\n\n", group.getName());
+            System.out.printf("===== Group %s ended =====\n\n", group.getName());
+        }
+
+        for (Group group : groups) {
+            group.showOverallResult();
         }
     }
 

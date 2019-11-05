@@ -7,6 +7,9 @@ public class YellowCardEvent extends Event {
 
     @Override
     public void handle() {
-
+        actor.incrementYellowCard();
+        // TODO: Check if this actor receive 2 yellow card
+        actor.getTeamInMatch().incrementYellowCardCount();
+        System.out.println(actor.getTeamInMatch().getTeam().getName() + " yellow card");
     }
 }

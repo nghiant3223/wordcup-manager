@@ -28,28 +28,41 @@ public class Group {
         return name;
     }
 
-    public void setName(GroupName name) {
-        this.name = name;
-    }
-
     public List<Team> getTeams() {
         return teams;
     }
 
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
+    public void addTeam(Team team) {
+        TeamPerformanceInGroup teamPerf = new TeamPerformanceInGroup(team);
+        teamPerformances.add(teamPerf);
+        teams.add(team);
     }
 
-    public List<TeamPerformanceInGroup> getTeamPerfs() {
+    public List<TeamPerformanceInGroup> getTeamPerformances() {
         return teamPerformances;
-    }
-
-    public void setTeamPerfs(List<TeamPerformanceInGroup> teamPerfs) {
-        this.teamPerformances = teamPerfs;
     }
 
     public Team getTeamByPlace(int place) {
         return null;
+    }
+
+    public void showOverallResult() {
+        String headerTemplate = "|%-15s|%-3s|%-3s|%-3s|%-3s|%-3s|%-3s|%-3s|%-3s|%-2s|\n";
+        String rowTemplate = "|%-15s|%-3d|%-3d|%-3d|%-3d|%-3d|%-3d|%-3s|%-3s|%-2s|\n";
+
+        System.out.printf("\nGroup %s\n", getName());
+        System.out.println("-".repeat(52));
+        System.out.printf(headerTemplate, "Team", "MP", "W", "D", "L", "GF", "GA", "GD", "YC", "S");
+        System.out.println("-".repeat(52));
+
+        for (TeamPerformanceInGroup perf : teamPerformances) {
+            System.out.printf(rowTemplate, perf.getTeam().getName(), perf.getMatchPlayed(),
+                    perf.getWinCount(), perf.getDrawCount(), perf.getLostCount(),
+                    perf.getGoalFor(), perf.getGoalAgainst(),
+                    perf.getGoalDiff(), perf.getYellowCard(), perf.getScore());
+        }
+
+        System.out.println("-".repeat(52));
     }
 
     public void run() {
@@ -60,7 +73,13 @@ public class Group {
             Match match = new Match(home, away, RoundName.GROUP_STAGE);
             EventGenerator eventGenerator = new EventGenerator();
             match.start(eventGenerator);
-            // TODO: Update team performance
+
+            for (TeamPerformanceInGroup teamPerf : teamPerformances) {
+                if (teamPerf.getTeam() == match.getHomeTeam().getTeam()
+                        || teamPerf.getTeam() == match.getAwayTeam().getTeam()) {
+                    teamPerf.update(match);
+                }
+            }
         }
     }
 }

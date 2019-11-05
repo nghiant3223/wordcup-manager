@@ -9,5 +9,8 @@ public class GoalEvent extends Event {
     public void handle() {
         actor.getTeamInMatch().score();
         actor.incrementGoalCount();
+
+        TeamInMatch actorOpponentTeam = match.getOpponentTeam(actor);
+        actorOpponentTeam.concede();
     }
 }

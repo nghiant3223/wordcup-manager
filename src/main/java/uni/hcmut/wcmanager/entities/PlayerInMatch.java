@@ -21,8 +21,9 @@ public class PlayerInMatch {
         return redCardCount;
     }
 
-    public void incrementRedCount() {
-        this.redCardCount = this.redCardCount + 1;
+    public void incrementRedCardCount() {
+        redCardCount = redCardCount + 1;
+
     }
 
     public int getYellowCardCount() {
@@ -30,7 +31,7 @@ public class PlayerInMatch {
     }
 
     public void incrementYellowCard() {
-        this.yellowCardCount = this.yellowCardCount + 1;
+        yellowCardCount = yellowCardCount + 1;
     }
 
     public int getGoalCount() {
@@ -38,8 +39,8 @@ public class PlayerInMatch {
     }
 
     public void incrementGoalCount() {
-        this.goalCount = this.goalCount + 1;
-        this.player.setGoalCount(this.player.getGoalCount() + 1);
+        goalCount = goalCount + 1;
+        player.setGoalCount(player.getGoalCount() + 1);
     }
 
     public TeamInMatch getTeamInMatch() {

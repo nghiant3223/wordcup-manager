@@ -15,10 +15,14 @@ public class TeamInMatch {
     private int remainingSubstitution;
     private int goalFor;
     private int goalAgainst;
+    private int yellowCardCount;
+    private int redCardCount;
 
     public TeamInMatch(Team team) {
         this.team = team;
 
+        this.yellowCardCount = 0;
+        this.redCardCount = 0;
         this.goalFor = 0;
         this.goalAgainst = 0;
         this.remainingSubstitution = 3;
@@ -79,5 +83,21 @@ public class TeamInMatch {
 
     public int getGoalAgainst() {
         return goalAgainst;
+    }
+
+    public int getYellowCardCount() {
+        return yellowCardCount;
+    }
+
+    public void incrementYellowCardCount() {
+        this.yellowCardCount += 1;
+    }
+
+    public int getRedCardCount() {
+        return redCardCount;
+    }
+
+    public void incrementRedCardCount() {
+        this.redCardCount += 1;
     }
 }
