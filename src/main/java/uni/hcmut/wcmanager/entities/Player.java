@@ -1,28 +1,32 @@
 package uni.hcmut.wcmanager.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "players")
 public class Player {
     @Id
+    @GeneratedValue
     @Column(name = "id")
     private int id;
 
     @Column(name = "fullname")
-    private int fullname;
+    private String fullname;
 
     @Column(name = "goal_count")
     private int goalCount;
 
-    @Column(name = "red_card_count")
-    private int redCardCount;
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
-    @Column(name = "yel_card_count")
-    private int yellowCardCount;
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public int getGoalCount() {
         return goalCount;
@@ -30,21 +34,5 @@ public class Player {
 
     public void setGoalCount(int goalCount) {
         this.goalCount = goalCount;
-    }
-
-    public int getRedCardCount() {
-        return redCardCount;
-    }
-
-    public void setRedCardCount(int redCardCount) {
-        this.redCardCount = redCardCount;
-    }
-
-    public int getYellowCardCount() {
-        return yellowCardCount;
-    }
-
-    public void setYellowCardCount(int yellowCardCount) {
-        this.yellowCardCount = yellowCardCount;
     }
 }
