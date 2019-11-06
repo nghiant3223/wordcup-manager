@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 public class GroupStageDraw {
-    public static List<Integer> getDraws() {
+    private static Random random = new Random();
+
+    static List<Integer> getDraws() {
         List<Integer> draws = new ArrayList<>();
 
         for (int i = 0; i < 32; i++) {
@@ -37,7 +39,7 @@ public class GroupStageDraw {
         }};
 
         List<Integer> draws = getDraws();
-        Random random = new Random();
+
 
         for (Team team : teams) {
             int index = random.nextInt(draws.size());

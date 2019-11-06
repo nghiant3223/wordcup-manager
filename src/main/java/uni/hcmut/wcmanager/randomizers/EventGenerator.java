@@ -1,10 +1,10 @@
 package uni.hcmut.wcmanager.randomizers;
 
-import uni.hcmut.wcmanager.constants.MatchConstants;
+import uni.hcmut.wcmanager.constants.MatchRule;
 import uni.hcmut.wcmanager.entities.*;
+import uni.hcmut.wcmanager.utils.LangUtils;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -17,14 +17,16 @@ public class EventGenerator {
     }
 
     public EventGenerator() {
-        this.events = new ArrayList<>();
     }
 
-    public void startMatch(Match match) {
-        if (events.size() > 0) {
+    public void startGeneratingMatchEvents(Match match) {
+        // If events is passed to constructor, just play them.
+        // WARNING: JUST FOR TESTING
+        if (events != null) {
             for (Event e : events) {
+                // Throw exception if redundant event detected
                 if (match.isFinished()) {
-                    throw new InvalidParameterException("Cannot play event after match finishes!");
+                    throw new InvalidParameterException("Match has already finished");
                 }
 
                 match.handleEvent(e);
@@ -45,38 +47,46 @@ public class EventGenerator {
     }
 
     private void generateEventForDrawableMatch(Match match) {
-        for (int i = 0; i < MatchConstants.DRAWABLE_MATCH_DURATION; i += 10) {
-            for (int j = 0; j < MatchConstants.MAX_EVENT_EVERY_10MIN; j++) {
+        for (int i = 0; i < MatchRule.DRAWABLE_MATCH_DURATION; i += 10) {
+            for (int j = 0; j < MatchRule.MAX_EVENT_EVERY_10MIN; j++) {
                 boolean eventOccurs = random.nextBoolean();
                 if (eventOccurs) {
-                    Event event;
                     int at = i + random.nextInt(10);
-                    int type = random.nextInt(4);
-                    TeamInMatch team = random.nextBoolean() ? match.getHomeTeam() : match.getAwayTeam();
-                    List<PlayerInMatch> playingPlayers = team.getStartingPlayers();
-                    PlayerInMatch actor = playingPlayers.get(random.nextInt(playingPlayers.size()));
+                    int p = random.nextInt(100);
 
-                    switch (type) {
-                        case 0:
-                            event = new GoalEvent(match, actor, at);
-                            break;
-                        case 1:
-//                            event = new RedCardEvent(match, actor, at);
-//                            break;
-                        case 2:
-//                            event = new YellowCardEvent(match, actor, at);
-//                            break;
-                        default:
-                            event = new InjuryEvent(match, actor, at);
+                    TeamInMatch team = random.nextBoolean() ? match.getHomeTeam() : match.getAwayTeam();
+                    List<PlayerInMatch> playingPlayers = team.getPlayingPlayers();
+                    int playingPlayerIndex = random.nextInt(playingPlayers.size());
+                    PlayerInMatch actor = playingPlayers.get(playingPlayerIndex);
+
+                    Event event;
+
+                    if (LangUtils.intInRange(p, 0, 50)) {
+                        event = new GoalEvent(match, actor, at);
+                    } else if (LangUtils.intInRange(p, 50, 70)) {
+                        event = new YellowCardEvent(match, actor, at);
+                    } else if (LangUtils.intInRange(p, 70, 80)) {
+                        event = new RedCardEvent(match, actor, at);
+                    } else if (LangUtils.intInRange(p, 80, 90)) {
+                        event = new SubstitutionEvent(match, actor, at);
+                    } else {
+                        event = new InjuryEvent(match, actor, at);
                     }
 
                     match.handleEvent(event);
 
+                    // If match finishes due to some special condition,
+                    // no more events is generated
                     if (match.isFinished()) {
                         return;
                     }
                 }
             }
+        }
+
+        // If 90 minutes elapse, the match finishes
+        if (!match.isFinished()) {
+            match.setFinished(true);
         }
     }
 

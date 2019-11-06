@@ -23,7 +23,7 @@ public class GroupStage implements IRound {
         }
 
         for (Group group : groups) {
-            group.showOverallResult();
+            group.displayResult();
         }
     }
 

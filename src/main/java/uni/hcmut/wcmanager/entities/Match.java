@@ -1,5 +1,6 @@
 package uni.hcmut.wcmanager.entities;
 
+import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.enums.MatchType;
 import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
@@ -67,12 +68,12 @@ public class Match {
     }
 
     public void start(EventGenerator eventGenerator) {
-        eventGenerator.startMatch(this);
+        eventGenerator.startGeneratingMatchEvents(this);
         finish();
     }
 
     private void finish() {
-        System.out.println(String.format("%s %d - %d %s",
+        System.out.println(String.format(TemplateString.MATCH_RESULT,
                 homeTeam.getTeam().getName(), homeTeam.getGoalFor(),
                 awayTeam.getGoalFor(), awayTeam.getTeam().getName()));
     }
@@ -102,19 +103,27 @@ public class Match {
         return awayTeam;
     }
 
-    public TeamInMatch getPlayerOpponentTeam(PlayerInMatch player) {
-        if (player.getTeamInMatch() == homeTeam) {
+    public boolean checkTeamCompetesInMatch(Team team) {
+        return team == getHomeTeam().getTeam() || team == getAwayTeam().getTeam();
+    }
+
+    public TeamInMatch getOpponentTeam(TeamInMatch team) {
+        if (team == homeTeam) {
             return awayTeam;
         }
 
         return homeTeam;
     }
 
-    public TeamInMatch getTeamInMatch(Team t) {
-        if (t == homeTeam.getTeam()) {
-            return homeTeam;
-        }
+    public void endDueToLackOfPlayers(TeamInMatch loser) {
+        TeamInMatch winner = getOpponentTeam(loser);
 
-        return awayTeam;
+        winner.setGoalFor(3);
+        winner.setGoalAgainst(0);
+
+        loser.setGoalFor(0);
+        loser.setGoalAgainst(3);
+
+        setFinished(true);
     }
 }

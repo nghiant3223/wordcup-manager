@@ -23,7 +23,7 @@ public class Tournament {
 
         String hql = "FROM Team";
         Query query = session.createQuery(hql);
-        teams = query.list();
+        teams = (List<Team>) query.list();
     }
 
     public void start() {

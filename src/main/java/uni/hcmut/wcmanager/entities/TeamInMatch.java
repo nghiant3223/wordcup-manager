@@ -1,6 +1,7 @@
 package uni.hcmut.wcmanager.entities;
 
-import uni.hcmut.wcmanager.randomizers.TeamRandomizer;
+import uni.hcmut.wcmanager.constants.GameRule;
+import uni.hcmut.wcmanager.randomizers.CoachSimulator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,8 @@ public class TeamInMatch {
 
     private List<PlayerInMatch> startingPlayers;
     private List<PlayerInMatch> substitutePlayers;
+    private List<PlayerInMatch> playingPlayers;
+    private List<PlayerInMatch> benchPlayers;
     private List<PlayerInMatch> sentOffPlayers;
 
     private int remainingSubstitution;
@@ -21,26 +24,30 @@ public class TeamInMatch {
     public TeamInMatch(Team team) {
         this.team = team;
 
-        this.yellowCardCount = 0;
-        this.redCardCount = 0;
         this.goalFor = 0;
         this.goalAgainst = 0;
-        this.remainingSubstitution = 3;
+        this.redCardCount = 0;
+        this.yellowCardCount = 0;
+        this.remainingSubstitution = GameRule.AVAILABLE_SUBSTITUTION_COUNT;
 
         this.sentOffPlayers = new ArrayList<>();
         this.startingPlayers = new ArrayList<>();
         this.substitutePlayers = new ArrayList<>();
+        this.playingPlayers = new ArrayList<>();
+        this.benchPlayers = new ArrayList<>();
 
-        List<ArrayList<Player>> lineup = TeamRandomizer.createLineup(team);
+        List<ArrayList<Player>> lineup = CoachSimulator.presentMatchLineup(team);
 
         for (Player p : lineup.get(0)) {
             PlayerInMatch pim = new PlayerInMatch(p, this);
             this.startingPlayers.add(pim);
+            this.playingPlayers.add(pim);
         }
 
         for (Player p : lineup.get(1)) {
             PlayerInMatch pim = new PlayerInMatch(p, this);
             this.substitutePlayers.add(pim);
+            this.benchPlayers.add(pim);
         }
     }
 
@@ -48,13 +55,24 @@ public class TeamInMatch {
         return team;
     }
 
-    public void substitute(PlayerInMatch out, PlayerInMatch in) {
-        startingPlayers.remove(out);
-        substitutePlayers.add(in);
+    public void substitutePlayer(PlayerInMatch out, PlayerInMatch in) {
+        // Remove `out` player from list of playing players
+        playingPlayers.remove(out);
+
+        // Once substituted, player cannot return to play, so he is sent off the field.
+        sentOffPlayers.add(out);
+
+        // Add `in` player to list of playing players
+        playingPlayers.add(in);
+        // Remove `in` player from list of players sitting on bench
+        benchPlayers.remove(in);
+
+        // Reduce #substitution available
+        remainingSubstitution -= 1;
     }
 
     public boolean isAbleToSubstitute() {
-        return remainingSubstitution > 0;
+        return remainingSubstitution > 0 && benchPlayers.size() > 0;
     }
 
     public void score() {
@@ -65,8 +83,24 @@ public class TeamInMatch {
         goalAgainst = goalAgainst + 1;
     }
 
+    public void setGoalFor(int goalFor) {
+        this.goalFor = goalFor;
+    }
+
+    public void setGoalAgainst(int goalAgainst) {
+        this.goalAgainst = goalAgainst;
+    }
+
+    public List<PlayerInMatch> getPlayingPlayers() {
+        return playingPlayers;
+    }
+
     public List<PlayerInMatch> getStartingPlayers() {
         return startingPlayers;
+    }
+
+    public List<PlayerInMatch> getBenchPlayers() {
+        return benchPlayers;
     }
 
     public List<PlayerInMatch> getSubstitutePlayers() {
@@ -75,6 +109,11 @@ public class TeamInMatch {
 
     public List<PlayerInMatch> getSentOffPlayers() {
         return sentOffPlayers;
+    }
+
+    public void sendPlayerOff(PlayerInMatch player) {
+        playingPlayers.remove(player);
+        sentOffPlayers.add(player);
     }
 
     public int getGoalFor() {

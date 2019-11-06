@@ -7,10 +7,12 @@ public class GoalEvent extends Event {
 
     @Override
     public void handle() {
-        actor.getTeamInMatch().score();
         actor.incrementGoalCount();
 
-        TeamInMatch actorOpponentTeam = match.getPlayerOpponentTeam(actor);
-        actorOpponentTeam.concede();
+        TeamInMatch playersTeam = actor.getTeamInMatch();
+        playersTeam.score();
+
+        TeamInMatch playersOpponentTeam = match.getOpponentTeam(playersTeam);
+        playersOpponentTeam.concede();
     }
 }

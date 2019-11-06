@@ -1,6 +1,6 @@
 package uni.hcmut.wcmanager.entities;
 
-public class YellowCardEvent extends Event {
+public class YellowCardEvent extends CardEvent {
     public YellowCardEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
     }
@@ -8,7 +8,14 @@ public class YellowCardEvent extends Event {
     @Override
     public void handle() {
         actor.incrementYellowCard();
-        // TODO: Check if this actor receive 2 yellow card
-        actor.getTeamInMatch().incrementYellowCardCount();
+
+        TeamInMatch playersTeam = actor.getTeamInMatch();
+        playersTeam.incrementYellowCardCount();
+
+        // If this player has received 2 yellow cards
+        if (actor.getYellowCardCount() == 2) {
+            playersTeam.sendPlayerOff(actor);
+            afterRedCardEvent();
+        }
     }
 }

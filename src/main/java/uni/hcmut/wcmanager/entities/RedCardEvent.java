@@ -1,6 +1,6 @@
 package uni.hcmut.wcmanager.entities;
 
-public class RedCardEvent extends Event {
+public class RedCardEvent extends CardEvent {
     public RedCardEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
     }
@@ -8,7 +8,12 @@ public class RedCardEvent extends Event {
     @Override
     public void handle() {
         actor.incrementRedCardCount();
-        // TODO: Send this player off the field
-        actor.getTeamInMatch().incrementRedCardCount();
+
+        TeamInMatch playersTeam = actor.getTeamInMatch();
+        playersTeam.incrementRedCardCount();
+        playersTeam.sendPlayerOff(actor);
+
+        afterRedCardEvent();
     }
+
 }
