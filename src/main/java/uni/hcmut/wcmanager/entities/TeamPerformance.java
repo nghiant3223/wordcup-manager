@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "group_performances")
-public class TeamPerformanceInGroup {
+public class TeamPerformance {
     @Id
     @Column(name = "team_id")
     private int teamId;
@@ -38,11 +38,14 @@ public class TeamPerformanceInGroup {
 
     private transient Team team;
 
-    public TeamPerformanceInGroup(Team team) {
+    private transient Group group;
+
+    public TeamPerformance(Team team, Group group) {
         this.team = team;
+        this.group = group;
     }
 
-    public TeamPerformanceInGroup() {
+    public TeamPerformance() {
 
     }
 
@@ -111,5 +114,9 @@ public class TeamPerformanceInGroup {
 
     public int getYellowCard() {
         return yellowCard;
+    }
+
+    public Group getGroup() {
+        return group;
     }
 }

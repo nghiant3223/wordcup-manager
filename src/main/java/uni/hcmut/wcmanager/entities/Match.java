@@ -77,10 +77,6 @@ public class Match {
                 awayTeam.getGoalFor(), awayTeam.getTeam().getName()));
     }
 
-    public TeamInMatch getWinner() {
-        return null;
-    }
-
 
     public void handleEvent(Event e) {
         e.handle();
@@ -88,10 +84,6 @@ public class Match {
 
     public MatchType getMatchType() {
         return matchType;
-    }
-
-    public void setMatchType(MatchType matchType) {
-        this.matchType = matchType;
     }
 
     public boolean isFinished() {
@@ -110,11 +102,19 @@ public class Match {
         return awayTeam;
     }
 
-    public TeamInMatch getOpponentTeam(PlayerInMatch player) {
+    public TeamInMatch getPlayerOpponentTeam(PlayerInMatch player) {
         if (player.getTeamInMatch() == homeTeam) {
             return awayTeam;
         }
 
         return homeTeam;
+    }
+
+    public TeamInMatch getTeamInMatch(Team t) {
+        if (t == homeTeam.getTeam()) {
+            return homeTeam;
+        }
+
+        return awayTeam;
     }
 }

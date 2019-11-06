@@ -10,6 +10,5 @@ public class RedCardEvent extends Event {
         actor.incrementRedCardCount();
         // TODO: Send this player off the field
         actor.getTeamInMatch().incrementRedCardCount();
-        System.out.println(actor.getTeamInMatch().getTeam().getName() + " red card");
     }
 }

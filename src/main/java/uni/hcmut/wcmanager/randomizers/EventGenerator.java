@@ -61,11 +61,11 @@ public class EventGenerator {
                             event = new GoalEvent(match, actor, at);
                             break;
                         case 1:
-                            event = new RedCardEvent(match, actor, at);
-                            break;
+//                            event = new RedCardEvent(match, actor, at);
+//                            break;
                         case 2:
-                            event = new YellowCardEvent(match, actor, at);
-                            break;
+//                            event = new YellowCardEvent(match, actor, at);
+//                            break;
                         default:
                             event = new InjuryEvent(match, actor, at);
                     }

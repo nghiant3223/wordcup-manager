@@ -10,7 +10,7 @@ public class GoalEvent extends Event {
         actor.getTeamInMatch().score();
         actor.incrementGoalCount();
 
-        TeamInMatch actorOpponentTeam = match.getOpponentTeam(actor);
+        TeamInMatch actorOpponentTeam = match.getPlayerOpponentTeam(actor);
         actorOpponentTeam.concede();
     }
 }

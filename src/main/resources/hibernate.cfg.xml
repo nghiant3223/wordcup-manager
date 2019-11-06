@@ -30,7 +30,7 @@
         <mapping class="uni.hcmut.wcmanager.entities.Player" />
         <mapping class="uni.hcmut.wcmanager.entities.Team" />
         <mapping class="uni.hcmut.wcmanager.entities.Match" />
-        <mapping class="uni.hcmut.wcmanager.entities.TeamPerformanceInGroup" />
+        <mapping class="uni.hcmut.wcmanager.entities.TeamPerformance" />
 
     </session-factory>
 
