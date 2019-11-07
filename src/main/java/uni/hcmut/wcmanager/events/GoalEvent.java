@@ -1,4 +1,9 @@
-package uni.hcmut.wcmanager.entities;
+package uni.hcmut.wcmanager.events;
+
+import uni.hcmut.wcmanager.entities.Match;
+import uni.hcmut.wcmanager.entities.PlayerInMatch;
+import uni.hcmut.wcmanager.entities.TeamInMatch;
+import uni.hcmut.wcmanager.events.Event;
 
 public class GoalEvent extends Event {
     public GoalEvent(Match match, PlayerInMatch actor, int at) {

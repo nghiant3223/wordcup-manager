@@ -15,6 +15,9 @@ public class TeamInMatch {
     private List<PlayerInMatch> benchPlayers;
     private List<PlayerInMatch> sentOffPlayers;
 
+    private List<Boolean> penaltyShootoutHistory;
+
+    private int penaltyShootScore;
     private int remainingSubstitution;
     private int goalFor;
     private int goalAgainst;
@@ -28,6 +31,7 @@ public class TeamInMatch {
         this.goalAgainst = 0;
         this.redCardCount = 0;
         this.yellowCardCount = 0;
+        this.penaltyShootScore = 0;
         this.remainingSubstitution = GameRule.AVAILABLE_SUBSTITUTION_COUNT;
 
         this.sentOffPlayers = new ArrayList<>();
@@ -138,5 +142,25 @@ public class TeamInMatch {
 
     public void incrementRedCardCount() {
         this.redCardCount += 1;
+    }
+
+    public int getPenaltyShootScore() {
+        return penaltyShootScore;
+    }
+
+    public void incrementPenaltyShootScore() {
+        penaltyShootScore += 1;
+    }
+
+    public List<Boolean> getPenaltyShootoutHistory() {
+        return penaltyShootoutHistory;
+    }
+
+    public void initPenaltyShootoutHistory() {
+        penaltyShootoutHistory = new ArrayList<>();
+    }
+
+    public void addPenaltyShootoutHistory(boolean in) {
+        penaltyShootoutHistory.add(in);
     }
 }

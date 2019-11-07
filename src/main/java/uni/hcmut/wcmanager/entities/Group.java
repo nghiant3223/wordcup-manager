@@ -4,7 +4,6 @@ import uni.hcmut.wcmanager.constants.GameRule;
 import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.enums.GroupName;
 import uni.hcmut.wcmanager.enums.RoundName;
-import uni.hcmut.wcmanager.randomizers.EventGenerator;
 import uni.hcmut.wcmanager.utils.PerformanceOrder;
 
 import java.util.*;
@@ -61,11 +60,11 @@ public class Group {
     }
 
     public void displayResult() {
-        System.out.printf(TemplateString.GROUP_NAME, getName());
+        System.out.printf(TemplateString.GROUP_NAME_TEMPLATE, getName());
 
-        System.out.println(TemplateString.SEPARATOR);
+        System.out.println(TemplateString.GROUP_SEPARATOR);
         System.out.print(TemplateString.HEADER);
-        System.out.println(TemplateString.SEPARATOR);
+        System.out.println(TemplateString.GROUP_SEPARATOR);
 
         for (TeamPerformance tp : teamPerformances) {
             System.out.printf(TemplateString.DATA_TEMPLATE,
@@ -75,7 +74,7 @@ public class Group {
                     tp.getYellowCard(), tp.getScore());
         }
 
-        System.out.println(TemplateString.SEPARATOR);
+        System.out.println(TemplateString.GROUP_SEPARATOR);
     }
 
     public void run() {
@@ -84,8 +83,8 @@ public class Group {
             Team away = teams.get(pair[1]);
 
             // Start match for two teams
-            Match match = new Match(home, away, RoundName.GROUP_STAGE);
-            match.start(new EventGenerator());
+            Match match = new DrawableMatch(home, away, RoundName.GROUP_STAGE);
+            match.start();
 
             // Update team's performance in group
             for (TeamPerformance tp : teamPerformances) {

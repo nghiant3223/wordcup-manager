@@ -1,6 +1,9 @@
-package uni.hcmut.wcmanager.entities;
+package uni.hcmut.wcmanager.events;
 
-import uni.hcmut.wcmanager.constants.GameRule;
+import uni.hcmut.wcmanager.constants.MatchRule;
+import uni.hcmut.wcmanager.entities.Match;
+import uni.hcmut.wcmanager.entities.PlayerInMatch;
+import uni.hcmut.wcmanager.entities.TeamInMatch;
 
 public abstract class CardEvent extends Event {
     public CardEvent(Match match, PlayerInMatch actor, int at) {
@@ -11,7 +14,7 @@ public abstract class CardEvent extends Event {
         TeamInMatch playersTeam = actor.getTeamInMatch();
         int actorTeammateOnFieldCount = playersTeam.getPlayingPlayers().size();
 
-        if (actorTeammateOnFieldCount < GameRule.MIN_PLAYING_PLAYER_COUNT) {
+        if (actorTeammateOnFieldCount < MatchRule.MIN_PLAYING_PLAYER_COUNT) {
             match.endDueToLackOfPlayers(playersTeam);
         }
     }
