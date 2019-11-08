@@ -12,23 +12,24 @@ public class KnockoutMatch extends Match {
     }
 
     public void start() {
-//        EventGenerator generator = new EventGenerator();
-//        enterMainHalvesAndExtraHalves(generator);
-//
-//        // If match's already finished due to lack of players
-//        // or winner is determined in main halves or extra halves
-//        if (isFinished()) {
-//            setWinner();
-//            finish();
-//            return;
-//        }
-//
-//        if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
-//            setFinished();
-//            setWinner();
-//            finish();
-//            return;
-//        }
+        EventGenerator generator = new EventGenerator();
+        enterMainHalvesAndExtraHalves(generator);
+
+        // If match's already finished due to lack of players
+        // or winner is determined in main halves or extra halves
+        if (isFinished()) {
+            setWinner();
+            finish();
+            return;
+        }
+
+        // If there is a team who have higher goal than the other after 90min or 105min or 120min
+        if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+            setFinished();
+            setWinner();
+            finish();
+            return;
+        }
 
         penaltyResult = new int[2];
         homeTeam.initPenaltyShootoutHistory();

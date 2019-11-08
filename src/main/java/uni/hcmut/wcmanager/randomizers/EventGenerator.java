@@ -40,11 +40,19 @@ public class EventGenerator {
         TeamInMatch awayTeam = match.getAwayTeam();
 
         if (events == null) {
+            // Generate events from 0' to 90'
             generateEventInMainTime(match);
             if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
                 return;
             }
 
+            // Generate events from 90' to 105'
+            generateEventInExtraTime(match);
+            if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                return;
+            }
+
+            // Generate events from 105' to 120'
             generateEventInExtraTime(match);
             if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
                 return;

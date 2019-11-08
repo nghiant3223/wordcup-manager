@@ -58,7 +58,6 @@ public class TeamPerformance {
             thisTeam = match.getHomeTeam();
         }
 
-
         goalFor += thisTeam.getGoalFor();
         goalAgainst += thisTeam.getGoalAgainst();
         yellowCard += thisTeam.getRedCardCount() * 2 + thisTeam.getYellowCardCount();
