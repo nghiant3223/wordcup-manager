@@ -83,7 +83,8 @@ public class Group {
             Team away = teams.get(pair[1]);
 
             // Start match for two teams
-            Match match = new DrawableMatch(home, away, RoundName.GROUP_STAGE);
+            Match match = new DrawableMatch(home, away);
+            match.setRoundName(RoundName.GROUP_STAGE);
             match.start();
 
             // Update team's performance in group

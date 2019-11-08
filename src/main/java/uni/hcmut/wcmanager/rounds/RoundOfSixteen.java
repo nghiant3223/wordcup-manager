@@ -21,6 +21,7 @@ public class RoundOfSixteen implements IRound {
     @Override
     public void run() {
         for (Match match : matches) {
+            match.setRoundName(RoundName.ROUND_OF_SIXTEEN);
             match.start();
         }
     }

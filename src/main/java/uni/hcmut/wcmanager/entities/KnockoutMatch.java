@@ -6,9 +6,8 @@ import uni.hcmut.wcmanager.randomizers.EventGenerator;
 import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 
 public class KnockoutMatch extends Match {
-    public KnockoutMatch(Team homeTeam, Team awayTeam, RoundName roundName) {
-        super(homeTeam, awayTeam, roundName);
-        this.roundName = roundName;
+    public KnockoutMatch(Team homeTeam, Team awayTeam) {
+        super(homeTeam, awayTeam);
     }
 
     public void start() {

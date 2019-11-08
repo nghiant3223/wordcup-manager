@@ -18,6 +18,7 @@ public class SemiFinalRound implements IRound {
     @Override
     public void run() {
         for (Match match : matches) {
+            match.setRoundName(RoundName.SEMI_FINAL_ROUND);
             match.start();
         }
     }

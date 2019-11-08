@@ -16,6 +16,7 @@ public class Final implements IRound {
 
     @Override
     public void run() {
+        match.setRoundName(RoundName.FINAL);
         match.start();
     }
 

@@ -5,9 +5,8 @@ import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
 
 public class DrawableMatch extends Match {
-    public DrawableMatch(Team home, Team away, RoundName roundName) {
-        super(home, away, roundName);
-        this.roundName = roundName;
+    public DrawableMatch(Team home, Team away) {
+        super(home, away);
     }
 
     public void start() {

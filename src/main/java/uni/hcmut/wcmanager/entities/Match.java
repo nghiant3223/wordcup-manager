@@ -16,10 +16,9 @@ public abstract class Match {
     protected TeamInMatch winner;
     protected int[] penaltyResult;
 
-    public Match(Team home, Team away, RoundName roundName) {
+    public Match(Team home, Team away) {
         this.isFinished = false;
 
-        this.roundName = roundName;
         homeTeam = new TeamInMatch(home);
         awayTeam = new TeamInMatch(away);
     }
@@ -96,6 +95,10 @@ public abstract class Match {
         loser.setGoalAgainst(3);
 
         setFinished();
+    }
+
+    public void setRoundName(RoundName roundName) {
+        this.roundName = roundName;
     }
 
     public RoundName getRoundName() {

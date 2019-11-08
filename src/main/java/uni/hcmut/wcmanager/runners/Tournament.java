@@ -6,7 +6,6 @@ import org.hibernate.query.Query;
 import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.entities.*;
 import uni.hcmut.wcmanager.enums.GroupName;
-import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.GroupStageDraw;
 import uni.hcmut.wcmanager.rounds.*;
 import uni.hcmut.wcmanager.utils.HibernateUtils;
@@ -38,7 +37,7 @@ public class Tournament {
     public void start() {
         List<Group> groups = GroupStageDraw.draw(teams);
 
-        System.out.println("\n>>>>>>>>>> GROUP STAGE ENDED <<<<<<<<<<\n");
+        System.out.println("\n>>>>>>>>>> GROUP STAGE STARTED <<<<<<<<<<\n");
         runGroupStage(groups);
         Map<Integer, Team[]> groupStageResult = currentRound.getResult();
         System.out.println("\n>>>>>>>>>> GROUP STAGE ENDED <<<<<<<<<<\n");
@@ -82,14 +81,12 @@ public class Tournament {
         topScorers = getTopScorers();
     }
 
-    private Map<Integer, Team[]> runGroupStage(List<Group> groups) {
+    private void runGroupStage(List<Group> groups) {
         currentRound = new GroupStage(groups);
         currentRound.run();
-
-        return currentRound.getResult();
     }
 
-    private Map<Integer, Team[]> runRoundOfSixteen(Map<Integer, Team[]> groupStageResult) {
+    private void runRoundOfSixteen(Map<Integer, Team[]> groupStageResult) {
         Team firstOfA = groupStageResult.get(GroupName.A.getId())[0];
         Team secondOfA = groupStageResult.get(GroupName.A.getId())[1];
 
@@ -114,16 +111,14 @@ public class Tournament {
         Team firstOfG = groupStageResult.get(GroupName.G.getId())[0];
         Team secondOfG = groupStageResult.get(GroupName.G.getId())[1];
 
-        RoundName roundOf16 = RoundName.ROUND_OF_SIXTEEN;
-
-        Match sq1 = new KnockoutMatch(firstOfA, secondOfB, roundOf16);
-        Match sq2 = new KnockoutMatch(firstOfB, secondOfA, roundOf16);
-        Match sq3 = new KnockoutMatch(firstOfC, secondOfD, roundOf16);
-        Match sq4 = new KnockoutMatch(firstOfD, secondOfC, roundOf16);
-        Match sq5 = new KnockoutMatch(firstOfE, secondOfF, roundOf16);
-        Match sq6 = new KnockoutMatch(firstOfF, secondOfE, roundOf16);
-        Match sq7 = new KnockoutMatch(firstOfG, secondOfH, roundOf16);
-        Match sq8 = new KnockoutMatch(firstOfH, secondOfG, roundOf16);
+        Match sq1 = new KnockoutMatch(firstOfA, secondOfB);
+        Match sq2 = new KnockoutMatch(firstOfB, secondOfA);
+        Match sq3 = new KnockoutMatch(firstOfC, secondOfD);
+        Match sq4 = new KnockoutMatch(firstOfD, secondOfC);
+        Match sq5 = new KnockoutMatch(firstOfE, secondOfF);
+        Match sq6 = new KnockoutMatch(firstOfF, secondOfE);
+        Match sq7 = new KnockoutMatch(firstOfG, secondOfH);
+        Match sq8 = new KnockoutMatch(firstOfH, secondOfG);
 
         List<Match> matches = new ArrayList<>();
         matches.add(sq1);
@@ -137,11 +132,9 @@ public class Tournament {
 
         currentRound = new RoundOfSixteen(matches);
         currentRound.run();
-
-        return currentRound.getResult();
     }
 
-    private Map<Integer, Team[]> runQuarterFinalRound(Map<Integer, Team[]> roundOf16Result) {
+    private void runQuarterFinalRound(Map<Integer, Team[]> roundOf16Result) {
         Team sq1Winner = roundOf16Result.get(0)[0];
         Team sq2Winner = roundOf16Result.get(1)[0];
         Team sq3Winner = roundOf16Result.get(2)[0];
@@ -151,12 +144,10 @@ public class Tournament {
         Team sq7Winner = roundOf16Result.get(6)[0];
         Team sq8Winner = roundOf16Result.get(7)[0];
 
-        RoundName roundOf16 = RoundName.QUARTER_FINAL_ROUND;
-
-        Match q1 = new KnockoutMatch(sq1Winner, sq2Winner, roundOf16);
-        Match q2 = new KnockoutMatch(sq3Winner, sq4Winner, roundOf16);
-        Match q3 = new KnockoutMatch(sq5Winner, sq6Winner, roundOf16);
-        Match q4 = new KnockoutMatch(sq7Winner, sq8Winner, roundOf16);
+        Match q1 = new KnockoutMatch(sq1Winner, sq2Winner);
+        Match q2 = new KnockoutMatch(sq3Winner, sq4Winner);
+        Match q3 = new KnockoutMatch(sq5Winner, sq6Winner);
+        Match q4 = new KnockoutMatch(sq7Winner, sq8Winner);
 
         List<Match> matches = new ArrayList<>();
         matches.add(q1);
@@ -166,20 +157,16 @@ public class Tournament {
 
         currentRound = new QuarterFinalRound(matches);
         currentRound.run();
-
-        return currentRound.getResult();
     }
 
-    private Map<Integer, Team[]> runSemiFinalRound(Map<Integer, Team[]> quarterFinalResult) {
+    private void runSemiFinalRound(Map<Integer, Team[]> quarterFinalResult) {
         Team q1Winner = quarterFinalResult.get(0)[0];
         Team q2Winner = quarterFinalResult.get(1)[0];
         Team q3Winner = quarterFinalResult.get(2)[0];
         Team q4Winner = quarterFinalResult.get(3)[0];
 
-        RoundName roundOf16 = RoundName.SEMI_FINAL_ROUND;
-
-        Match s1 = new KnockoutMatch(q1Winner, q2Winner, roundOf16);
-        Match s2 = new KnockoutMatch(q3Winner, q4Winner, roundOf16);
+        Match s1 = new KnockoutMatch(q1Winner, q2Winner);
+        Match s2 = new KnockoutMatch(q3Winner, q4Winner);
 
         List<Match> matches = new ArrayList<>();
         matches.add(s1);
@@ -187,22 +174,16 @@ public class Tournament {
 
         currentRound = new SemiFinalRound(matches);
         currentRound.run();
-
-        return currentRound.getResult();
     }
 
-    private Map<Integer, Team[]> runFinal(Map<Integer, Team[]> quarterFinalResult) {
+    private void runFinal(Map<Integer, Team[]> quarterFinalResult) {
         Team s1Winner = quarterFinalResult.get(0)[0];
         Team s2Winner = quarterFinalResult.get(1)[0];
 
-        RoundName roundOf16 = RoundName.SEMI_FINAL_ROUND;
-
-        Match f = new KnockoutMatch(s1Winner, s2Winner, roundOf16);
+        Match f = new KnockoutMatch(s1Winner, s2Winner);
 
         currentRound = new Final(f);
         currentRound.run();
-
-        return currentRound.getResult();
     }
 
     public void finish() {

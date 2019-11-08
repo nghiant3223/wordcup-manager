@@ -116,7 +116,6 @@ public class DbMatch {
         dbMatch.setHomeResult(homeTeam.getGoalFor());
         dbMatch.setHomeResult(awayTeam.getGoalFor());
 
-
         dbMatch.setRoundId(match.getRoundName().getId());
 
         if (match.getPenaltyResult() != null) {
