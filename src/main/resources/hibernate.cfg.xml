@@ -13,7 +13,7 @@
         <property name="connection.password">password</property>
 
         <!-- JDBC connection pool (use the built-in) -->
-        <property name="connection.pool_size">1</property>
+        <property name="connection.pool_size">2</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -29,7 +29,7 @@
 
         <mapping class="uni.hcmut.wcmanager.entities.Player"/>
         <mapping class="uni.hcmut.wcmanager.entities.Team"/>
-        <mapping class="uni.hcmut.wcmanager.entities.Match"/>
+        <mapping class="uni.hcmut.wcmanager.entities.DbMatch"/>
         <mapping class="uni.hcmut.wcmanager.entities.TeamPerformance"/>
 
     </session-factory>

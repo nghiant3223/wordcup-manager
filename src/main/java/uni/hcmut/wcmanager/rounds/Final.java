@@ -3,10 +3,8 @@ package uni.hcmut.wcmanager.rounds;
 import uni.hcmut.wcmanager.entities.Match;
 import uni.hcmut.wcmanager.entities.Team;
 import uni.hcmut.wcmanager.enums.RoundName;
-import uni.hcmut.wcmanager.rounds.IRound;
 import uni.hcmut.wcmanager.utils.RoundUtils;
 
-import java.util.List;
 import java.util.Map;
 
 public class Final implements IRound {
@@ -28,6 +26,6 @@ public class Final implements IRound {
 
     @Override
     public RoundName getName() {
-        return null;
+        return RoundName.FINAL;
     }
 }

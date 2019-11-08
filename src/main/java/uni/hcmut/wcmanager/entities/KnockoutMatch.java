@@ -55,6 +55,8 @@ public class KnockoutMatch extends Match {
     }
 
     protected void finish() {
+        super.finish();
+
         System.out.println(String.format(TemplateString.MATCH_RESULT_TEMPLATE,
                 homeTeam.getTeam().getName(), homeTeam.getGoalFor(),
                 awayTeam.getGoalFor(), awayTeam.getTeam().getName()));

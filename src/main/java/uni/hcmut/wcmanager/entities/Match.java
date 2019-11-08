@@ -3,59 +3,18 @@ package uni.hcmut.wcmanager.entities;
 import uni.hcmut.wcmanager.enums.MatchType;
 import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.events.Event;
+import uni.hcmut.wcmanager.utils.DbUtils;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "matches")
 public abstract class Match {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "home_id")
-    private int homeId;
-
-    @Column(name = "away_id")
-    private int awayId;
-
-    @Column(name = "home_result")
-    private int homeResult;
-
-    @Column(name = "away_result")
-    private int awayResult;
-
-    @Column(name = "away_penalty")
-    private int awayPenalty;
-
-    @Column(name = "home_penalty")
-    private int homePenalty;
-
-    @Column(name = "winner_id")
-    private int winnerId;
-
-    @Column(name = "round_id")
-    private int roundId;
-
-    public Match() {
-
-    }
-
-    public void prepareSqlEntity() {
-        this.homeId = this.homeTeam.getTeam().getId();
-        this.awayId = this.awayTeam.getTeam().getId();
-        this.roundId = this.roundName.getId();
-        // TODO: Prepare record to be saved on database
-    }
-
-    protected transient RoundName roundName;
-    protected transient MatchType matchType;
-    protected transient TeamInMatch homeTeam;
-    protected transient TeamInMatch awayTeam;
-    protected transient boolean isFinished;
-    protected transient TeamInMatch winner;
-    protected transient int[] penaltyResult;
+    protected RoundName roundName;
+    protected MatchType matchType;
+    protected TeamInMatch homeTeam;
+    protected TeamInMatch awayTeam;
+    protected boolean isFinished;
+    protected TeamInMatch winner;
+    protected int[] penaltyResult;
 
     public Match(Team home, Team away, RoundName roundName) {
         this.isFinished = false;
@@ -67,7 +26,9 @@ public abstract class Match {
 
     public abstract void start();
 
-    protected abstract void finish();
+    protected void finish() {
+        DbUtils.persistMatch(this);
+    }
 
     public void handleEvent(Event e) {
         e.handle();
@@ -135,5 +96,13 @@ public abstract class Match {
         loser.setGoalAgainst(3);
 
         setFinished();
+    }
+
+    public RoundName getRoundName() {
+        return roundName;
+    }
+
+    public int[] getPenaltyResult() {
+        return penaltyResult;
     }
 }
