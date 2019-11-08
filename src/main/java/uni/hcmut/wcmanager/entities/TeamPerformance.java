@@ -3,11 +3,12 @@ package uni.hcmut.wcmanager.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "group_performances")
+@Table(name = "team_performances")
 public class TeamPerformance {
     @Id
-    @Column(name = "team_id")
-    private int teamId;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "group_id")
     private int groupId;
@@ -30,19 +31,23 @@ public class TeamPerformance {
     @Column(name = "lost_count")
     private int lostCount;
 
-    private int goalDiff;
-
-    private int score;
-
+    @Column(name = "yellow_card")
     private int yellowCard;
 
-    private transient Team team;
+    @OneToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    private transient int goalDiff;
+
+    private transient int score;
 
     private transient Group group;
 
     public TeamPerformance(Team team, Group group) {
         this.team = team;
         this.group = group;
+        this.groupId = group.getName().getId();
     }
 
     public TeamPerformance() {

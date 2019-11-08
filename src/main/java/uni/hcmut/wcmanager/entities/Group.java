@@ -4,12 +4,12 @@ import uni.hcmut.wcmanager.constants.GameRule;
 import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.enums.GroupName;
 import uni.hcmut.wcmanager.enums.RoundName;
+import uni.hcmut.wcmanager.utils.DbUtils;
 import uni.hcmut.wcmanager.utils.PerformanceOrder;
 
 import java.util.*;
 
 public class Group {
-
     private GroupName name;
     private List<Team> teams;
     private List<Match> matches;
@@ -99,6 +99,10 @@ public class Group {
 
             // Sort teams's performances in group
             teamPerformances.sort(new PerformanceOrder());
+        }
+
+        for (TeamPerformance tp : teamPerformances) {
+            DbUtils.persistTeamPerformance(tp);
         }
     }
 }

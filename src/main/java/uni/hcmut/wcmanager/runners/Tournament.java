@@ -37,30 +37,30 @@ public class Tournament {
     public void start() {
         List<Group> groups = GroupStageDraw.draw(teams);
 
-        System.out.println("\n>>>>>>>>>> GROUP STAGE STARTED <<<<<<<<<<\n");
+        System.out.println("\n======>> GROUP STAGE STARTED <<======\n");
         runGroupStage(groups);
         Map<Integer, Team[]> groupStageResult = currentRound.getResult();
-        System.out.println("\n>>>>>>>>>> GROUP STAGE ENDED <<<<<<<<<<\n");
+        System.out.println("\n======>> GROUP STAGE ENDED <<======\n");
 
-        System.out.println("\n>>>>>>>>>> ROUND OF 16 STARTED <<<<<<<<<<\n");
+        System.out.println("\n======>> ROUND OF 16 STARTED <<======\n");
         runRoundOfSixteen(groupStageResult);
         Map<Integer, Team[]> roundOf16Result = currentRound.getResult();
-        System.out.println("\n>>>>>>>>>> ROUND OF 16 ENDED <<<<<<<<<<\n");
+        System.out.println("\n======>> ROUND OF 16 ENDED <<======\n");
 
-        System.out.println("\n>>>>>>>>>> QUARTERFINAL STARTED <<<<<<<<<<\n");
+        System.out.println("\n======>> QUARTERFINAL STARTED <<======\n");
         runQuarterFinalRound(roundOf16Result);
         Map<Integer, Team[]> quarterFinalResult = currentRound.getResult();
-        System.out.println("\n>>>>>>>>>> QUARTERFINAL ENDED <<<<<<<<<<\n");
+        System.out.println("\n======>> QUARTERFINAL ENDED <<======\n");
 
-        System.out.println("\n>>>>>>>>>> SEMIFINAL STARTED <<<<<<<<<<\n");
+        System.out.println("\n======>> SEMIFINAL STARTED <<======\n");
         runSemiFinalRound(quarterFinalResult);
         Map<Integer, Team[]> semiFinalResult = currentRound.getResult();
-        System.out.println("\n>>>>>>>>>> SEMIFINAL ENDED <<<<<<<<<<\n");
+        System.out.println("\n======>> SEMIFINAL ENDED <<======\n");
 
-        System.out.println("\n>>>>>>>>>> FINAL STARTED <<<<<<<<<<\n");
+        System.out.println("\n======>> FINAL STARTED <<======\n");
         runFinal(semiFinalResult);
         Map<Integer, Team[]> finalResult = currentRound.getResult();
-        System.out.println("\n>>>>>>>>>> FINAL ENDED <<<<<<<<<<<\n");
+        System.out.println("\n======>> FINAL ENDED <<======\n");
 
         champion = finalResult.get(0)[0];
 
