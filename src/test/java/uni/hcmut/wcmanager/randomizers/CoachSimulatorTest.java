@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import uni.hcmut.wcmanager.constants.GameRule;
 import uni.hcmut.wcmanager.constants.MatchRule;
-import uni.hcmut.wcmanager.entities.Player;
 import uni.hcmut.wcmanager.entities.Team;
+import uni.hcmut.wcmanager.entities.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
