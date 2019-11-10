@@ -1,6 +1,9 @@
-package uni.hcmut.wcmanager.entities;
+package uni.hcmut.wcmanager.rounds;
 
+import uni.hcmut.wcmanager.entities.Group;
+import uni.hcmut.wcmanager.entities.Team;
 import uni.hcmut.wcmanager.enums.RoundName;
+import uni.hcmut.wcmanager.rounds.IRound;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +44,6 @@ public class GroupStage implements IRound {
 
     @Override
     public RoundName getName() {
-        return null;
+        return RoundName.GROUP_STAGE;
     }
 }

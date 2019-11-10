@@ -2,6 +2,7 @@ package uni.hcmut.wcmanager.randomizers;
 
 import uni.hcmut.wcmanager.constants.MatchRule;
 import uni.hcmut.wcmanager.entities.*;
+import uni.hcmut.wcmanager.events.*;
 import uni.hcmut.wcmanager.utils.LangUtils;
 
 import java.security.InvalidParameterException;
@@ -19,85 +20,153 @@ public class EventGenerator {
     public EventGenerator() {
     }
 
-    public void startGeneratingMatchEvents(Match match) {
-        // If events is passed to constructor, just play them.
-        // WARNING: JUST FOR TESTING
-        if (events != null) {
-            for (Event e : events) {
-                // Throw exception if redundant event detected
-                if (match.isFinished()) {
-                    throw new InvalidParameterException("Match has already finished");
-                }
+    public void playEventForDrawableMatch(DrawableMatch match) {
+        if (events == null) {
+            generateEventInMainTime(match);
+            return;
+        }
 
-                match.handleEvent(e);
+        for (Event e : events) {
+            if (e.getAt() >= MatchRule.FULL_DURATION || match.isFinished()) {
+                throw new InvalidParameterException("Match has already finished");
+            }
+
+            match.handleEvent(e);
+        }
+    }
+
+    public void playEventForKnockoutMatch(KnockoutMatch match) {
+        TeamInMatch homeTeam = match.getHomeTeam();
+        TeamInMatch awayTeam = match.getAwayTeam();
+
+        if (events == null) {
+            // Generate events from 0' to 90'
+            generateEventInMainTime(match);
+            if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                return;
+            }
+
+            // Generate events from 90' to 105'
+            generateEventInExtraTime(match);
+            if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                return;
+            }
+
+            // Generate events from 105' to 120'
+            generateEventInExtraTime(match);
+            if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                return;
             }
 
             return;
         }
 
-        switch (match.getMatchType()) {
-            case KNOCKOUT:
-                generateEventForKnockoutMatch(match);
-                break;
+        boolean anyEventOccursAfterMin105 = false;
+        boolean anyEventOccursAfterMin90 = false;
 
-            case DRAWABLE:
-                generateEventForDrawableMatch(match);
-                break;
+        for (Event e : events) {
+            // If match's already finished due to lack of players, we dont generate event anymore
+            if (match.isFinished()) {
+                throw new InvalidParameterException("Match has already finished");
+            }
+
+            if (e.getAt() >= MatchRule.FULL_DURATION) {
+                if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                    throw new InvalidParameterException("Match has already finished");
+                }
+
+                anyEventOccursAfterMin90 = true;
+            }
+
+
+            if (e.getAt() >= MatchRule.FULL_DURATION + MatchRule.EXTRA_HALF_DURATION) {
+                // If silver-goal rule happens,
+                // but there is still a event
+                if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                    throw new InvalidParameterException("Match has already finished");
+                }
+
+                anyEventOccursAfterMin105 = true;
+            }
+
+            if (e.getAt() >= MatchRule.EXTRA_FULL_DURATION) {
+                throw new InvalidParameterException("Invalid time at which event occurs");
+            }
+
+            match.handleEvent(e);
+        }
+
+
+        // If there after 90 mins but the match is still draw
+        // and there is no more event for the first extra-time half
+        if (!anyEventOccursAfterMin90 && homeTeam.getGoalFor() == awayTeam.getGoalFor()) {
+            throw new InvalidParameterException("Match cannot be a draw");
+        }
+
+        // If there after first extra-time half but the match is still draw
+        // and there is no more event for the second extra-time half
+        if (!anyEventOccursAfterMin105 && homeTeam.getGoalFor() == awayTeam.getGoalFor()) {
+            throw new InvalidParameterException("Match cannot be a draw");
         }
     }
 
-    private void generateEventForDrawableMatch(Match match) {
-        for (int i = 0; i < MatchRule.DRAWABLE_MATCH_DURATION; i += 10) {
+    private void generateEventInMainTime(Match match) {
+        for (int offsetMin = 0; offsetMin < MatchRule.FULL_DURATION; offsetMin += 10) {
             for (int j = 0; j < MatchRule.MAX_EVENT_EVERY_10MIN; j++) {
+                // If match's already finished due to lack of players, we dont generate event anymore
+                if (match.isFinished()) {
+                    return;
+                }
+
                 boolean eventOccurs = random.nextBoolean();
                 if (eventOccurs) {
-                    int at = i + random.nextInt(10);
-                    int p = random.nextInt(100);
-
-                    TeamInMatch team = random.nextBoolean() ? match.getHomeTeam() : match.getAwayTeam();
-                    List<PlayerInMatch> playingPlayers = team.getPlayingPlayers();
-                    int playingPlayerIndex = random.nextInt(playingPlayers.size());
-                    PlayerInMatch actor = playingPlayers.get(playingPlayerIndex);
-
-                    Event event;
-
-                    if (LangUtils.intInRange(p, 0, 50)) {
-                        event = new GoalEvent(match, actor, at);
-                    } else if (LangUtils.intInRange(p, 50, 70)) {
-                        event = new YellowCardEvent(match, actor, at);
-                    } else if (LangUtils.intInRange(p, 70, 80)) {
-                        event = new RedCardEvent(match, actor, at);
-                    } else if (LangUtils.intInRange(p, 80, 90)) {
-                        event = new SubstitutionEvent(match, actor, at);
-                    } else {
-                        event = new InjuryEvent(match, actor, at);
-                    }
-
-                    match.handleEvent(event);
-
-                    // If match finishes due to some special condition,
-                    // no more events is generated
-                    if (match.isFinished()) {
-                        return;
-                    }
+                    Event e = createRandomEvent(match, offsetMin);
+                    match.handleEvent(e);
                 }
             }
         }
+    }
 
-        // If 90 minutes elapse, the match finishes
-        if (!match.isFinished()) {
-            match.setFinished(true);
+    private void generateEventInExtraTime(Match match) {
+        for (int offsetMin = 0; offsetMin < MatchRule.EXTRA_HALF_DURATION; offsetMin += 5) {
+            for (int j = 0; j < MatchRule.MAX_EVENT_EVERY_5MIN; j++) {
+                // If match's already finished, we dont generate event anymore
+                if (match.isFinished()) {
+                    return;
+                }
+
+                boolean eventOccurs = random.nextBoolean();
+                if (eventOccurs) {
+                    Event e = createRandomEvent(match, MatchRule.FULL_DURATION + offsetMin);
+                    match.handleEvent(e);
+                }
+            }
         }
     }
 
-    private void generateEventForKnockoutMatch(Match match) {
-        for (int i = 0; i < 10; i++) {
-            Event e = new GoalEvent(match, null, 5);
-            match.handleEvent(e);
+    private Event createRandomEvent(Match match, int offsetMinute) {
+        int at = offsetMinute + random.nextInt(10);
+        int p = random.nextInt(100);
 
-            if (match.isFinished()) {
-                return;
-            }
+        TeamInMatch team = random.nextBoolean() ? match.getHomeTeam() : match.getAwayTeam();
+        List<PlayerInMatch> playingPlayers = team.getPlayingPlayers();
+        int playingPlayerIndex = random.nextInt(playingPlayers.size());
+        PlayerInMatch actor = playingPlayers.get(playingPlayerIndex);
+
+        Event event;
+
+        if (LangUtils.intInRange(p, 0, 50)) {
+            event = new GoalEvent(match, actor, at);
+        } else if (LangUtils.intInRange(p, 50, 70)) {
+            event = new YellowCardEvent(match, actor, at);
+        } else if (LangUtils.intInRange(p, 70, 80)) {
+            event = new RedCardEvent(match, actor, at);
+        } else if (LangUtils.intInRange(p, 80, 90)) {
+            event = new SubstitutionEvent(match, actor, at);
+        } else {
+            event = new InjuryEvent(match, actor, at);
         }
+
+        return event;
     }
 }

@@ -1,6 +1,10 @@
-package uni.hcmut.wcmanager.entities;
+package uni.hcmut.wcmanager.events;
 
-import uni.hcmut.wcmanager.constants.GameRule;
+import uni.hcmut.wcmanager.constants.MatchRule;
+import uni.hcmut.wcmanager.entities.Match;
+import uni.hcmut.wcmanager.entities.PlayerInMatch;
+import uni.hcmut.wcmanager.entities.TeamInMatch;
+import uni.hcmut.wcmanager.events.Event;
 import uni.hcmut.wcmanager.randomizers.CoachSimulator;
 
 public class InjuryEvent extends Event {
@@ -15,7 +19,7 @@ public class InjuryEvent extends Event {
 
         // If player's team cannot substitute player
         if (!playersTeam.isAbleToSubstitute()) {
-            if (playersTeam.getPlayingPlayers().size() < GameRule.MIN_PLAYING_PLAYER_COUNT) {
+            if (playersTeam.getPlayingPlayers().size() < MatchRule.MIN_PLAYING_PLAYER_COUNT) {
                 match.endDueToLackOfPlayers(playersTeam);
                 return;
             }

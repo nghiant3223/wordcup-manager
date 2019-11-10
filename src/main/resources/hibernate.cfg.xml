@@ -27,10 +27,10 @@
         <!-- Echo all executed SQL to stdout -->
         <property name="show_sql">false</property>
 
-        <mapping class="uni.hcmut.wcmanager.entities.Player" />
-        <mapping class="uni.hcmut.wcmanager.entities.Team" />
-        <mapping class="uni.hcmut.wcmanager.entities.Match" />
-        <mapping class="uni.hcmut.wcmanager.entities.TeamPerformance" />
+        <mapping class="uni.hcmut.wcmanager.entities.Player"/>
+        <mapping class="uni.hcmut.wcmanager.entities.Team"/>
+        <mapping class="uni.hcmut.wcmanager.entities.DbMatch"/>
+        <mapping class="uni.hcmut.wcmanager.entities.TeamPerformance"/>
 
     </session-factory>
 

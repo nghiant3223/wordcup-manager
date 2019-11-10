@@ -1,5 +1,9 @@
-package uni.hcmut.wcmanager.entities;
+package uni.hcmut.wcmanager.events;
 
+import uni.hcmut.wcmanager.entities.Match;
+import uni.hcmut.wcmanager.entities.PlayerInMatch;
+import uni.hcmut.wcmanager.entities.TeamInMatch;
+import uni.hcmut.wcmanager.events.Event;
 import uni.hcmut.wcmanager.randomizers.CoachSimulator;
 
 public class SubstitutionEvent extends Event {
