@@ -5,9 +5,50 @@ import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
 import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 
+import java.security.InvalidParameterException;
+
 public class KnockoutMatch extends Match {
     public KnockoutMatch(Team homeTeam, Team awayTeam) {
         super(homeTeam, awayTeam);
+    }
+
+    public void start(EventGenerator eventGenerator, PenaltyShootoutGenerator shootoutGenerator) {
+        if (eventGenerator == null) {
+            throw new InvalidParameterException("eventGenerator mustn't be null");
+        }
+
+        enterMainHalvesAndExtraHalves(eventGenerator);
+        // If match's already finished due to lack of players
+        // or winner is determined in main halves or extra halves
+        if (isFinished()) {
+            setWinner();
+            finish();
+            return;
+        }
+
+        // If there is a team who have higher goal than the other after 90min or 105min or 120min
+        if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+            setFinished();
+            setWinner();
+            finish();
+            return;
+        } else if (shootoutGenerator == null) {
+            throw new InvalidParameterException("Match not ended yet, shootoutGenerator mustn't be null");
+        }
+
+        penaltyResult = new int[2];
+        homeTeam.initPenaltyShootoutHistory();
+        awayTeam.initPenaltyShootoutHistory();
+
+        PenaltyShootoutGenerator simulator = new PenaltyShootoutGenerator();
+        enterPenaltyShootout(simulator);
+
+        penaltyResult[0] = homeTeam.getPenaltyShootScore();
+        penaltyResult[1] = awayTeam.getPenaltyShootScore();
+
+        setFinished();
+        setWinner();
+        finish();
     }
 
     public void start() {
