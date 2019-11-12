@@ -9,10 +9,7 @@ import org.junit.Test;
 import uni.hcmut.wcmanager.constants.GameRule;
 import uni.hcmut.wcmanager.enums.GroupName;
 import uni.hcmut.wcmanager.enums.RoundName;
-import uni.hcmut.wcmanager.events.Event;
-import uni.hcmut.wcmanager.events.GoalEvent;
-import uni.hcmut.wcmanager.events.RedCardEvent;
-import uni.hcmut.wcmanager.events.YellowCardEvent;
+import uni.hcmut.wcmanager.events.*;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
 import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 import uni.hcmut.wcmanager.utils.HibernateUtils;
@@ -103,11 +100,11 @@ public class TeamPerformanceTest {
     public void Test_Update_MultiRedcard_TeamHome(){
         TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
         TeamInMatch homeTeam = match.getHomeTeam();
-        Event RedCard = new RedCardEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
-        Event RedCard2 = new YellowCardEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event RedCard = new RedCardEvent(match, homeTeam.getPlayingPlayers().get(1), 10);
+        Event YellowCard = new YellowCardEvent(match, homeTeam.getPlayingPlayers().get(3), 10);
         List<Event> events = new ArrayList<>();
         events.add(RedCard);
-        events.add(RedCard2);
+        events.add(YellowCard);
         EventGenerator generator = new EventGenerator(events);
         match.start(generator);
         teamPerformances.update(match);
@@ -127,7 +124,101 @@ public class TeamPerformanceTest {
         Assert.assertEquals(1, teamPerformances.getGoalFor());
     }
     @Test
-    public void Test_Update_GoalAgains_TeamHome(){
+    public void Test_Update_GoalAgainst_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(1, teamPerformances.getGoalAgainst());
+    }
+
+    @Test
+    public void Test_Update_getGoalDiff_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getGoalDiff());
+    }
+
+    @Test
+    public void Test_Update_Equal_getScore_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(1, teamPerformances.getScore());
+    }
+
+    @Test
+    public void Test_Update_Win_getScore_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event Goal1 = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 15);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(Goal1);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(3, teamPerformances.getScore());
+    }
+
+    @Test
+    public void Test_Update_Lose_getScore_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal1 = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 15);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal1);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getScore());
+    }
+
+    @Test
+    public void Test_Update_matchedPlay_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal1 = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 15);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal1);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(1, teamPerformances.getMatchPlayed());
+    }
+
+    @Test
+    public void Test_Update_Win_getWinCount_TeamHome(){
         TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
         TeamInMatch homeTeam = match.getHomeTeam();
         Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
@@ -136,7 +227,130 @@ public class TeamPerformanceTest {
         EventGenerator generator = new EventGenerator(events);
         match.start(generator);
         teamPerformances.update(match);
-        Assert.assertEquals(1, teamPerformances.getGoalFor());
+        Assert.assertEquals(1, teamPerformances.getWinCount());
+    }
+
+    @Test
+    public void Test_Update_Lost_Not_Win_getWinCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getWinCount());
+    }
+
+    @Test
+    public void Test_Update_Equal_Not_Win_getWinCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 20);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getWinCount());
+    }
+
+    @Test
+    public void Test_Update_Lost_getWinCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(1, teamPerformances.getLostCount());
+    }
+
+    @Test
+    public void Test_Update_Equal_When_Not_Lost_getWinCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getLostCount());
+    }
+
+    @Test
+    public void Test_Update_Win_When_Not_Lost_getWinCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getLostCount());
+    }
+
+    @Test
+    public void Test_Update_DrawCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        Event OwnGoal = new OwnGoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        events.add(OwnGoal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(1, teamPerformances.getDrawCount());
+    }
+
+    @Test
+    public void Test_Update_Win_DrawCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getDrawCount());
+    }
+
+    @Test
+    public void Test_Update_Lost_DrawCount_TeamHome(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(0, teamPerformances.getDrawCount());
+    }
+
+    @Test
+    public void Test_GetGroup(){
+        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
+        TeamInMatch homeTeam = match.getHomeTeam();
+        Event Goal = new GoalEvent(match, homeTeam.getPlayingPlayers().get(0), 10);
+        List<Event> events = new ArrayList<>();
+        events.add(Goal);
+        EventGenerator generator = new EventGenerator(events);
+        match.start(generator);
+        teamPerformances.update(match);
+        Assert.assertEquals(group, teamPerformances.getGroup());
     }
 
     @After
