@@ -27,7 +27,7 @@ public abstract class Match {
 
     public abstract void start();
 //    public abstract void start(EventGenerator generator);
-    public abstract void start(EventGenerator eventGenerator, PenaltyShootoutGenerator shootoutGenerator);
+//    public abstract void start(EventGenerator eventGenerator, PenaltyShootoutGenerator shootoutGenerator);
 
     protected void finish() {
         DbUtils.persistMatch(this);
