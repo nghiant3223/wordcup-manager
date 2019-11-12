@@ -4,9 +4,23 @@ import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
 
+import java.security.InvalidParameterException;
+
 public class DrawableMatch extends Match {
     public DrawableMatch(Team home, Team away) {
         super(home, away);
+    }
+
+    public void start(EventGenerator generator) {
+        if (generator == null) {
+            throw new InvalidParameterException("eventGenerator mustn't be null");
+        }
+
+        generator.playEventForDrawableMatch(this);
+
+        setFinished();
+        setWinner();
+        finish();
     }
 
     public void start() {
