@@ -11,7 +11,9 @@ public class KnockoutMatch extends Match {
     public KnockoutMatch(Team homeTeam, Team awayTeam) {
         super(homeTeam, awayTeam);
     }
+    public void start(EventGenerator eventGenerator){
 
+    }
     public void start(EventGenerator eventGenerator, PenaltyShootoutGenerator shootoutGenerator) {
         if (eventGenerator == null) {
             throw new InvalidParameterException("eventGenerator mustn't be null");

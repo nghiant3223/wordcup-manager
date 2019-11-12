@@ -3,6 +3,7 @@ package uni.hcmut.wcmanager.entities;
 import uni.hcmut.wcmanager.constants.TemplateString;
 import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
+import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 
 import java.security.InvalidParameterException;
 
@@ -11,7 +12,7 @@ public class DrawableMatch extends Match {
         super(home, away);
     }
 
-    public void start(EventGenerator generator) {
+    public void start(EventGenerator generator, PenaltyShootoutGenerator shootoutGenerator) {
         if (generator == null) {
             throw new InvalidParameterException("eventGenerator mustn't be null");
         }

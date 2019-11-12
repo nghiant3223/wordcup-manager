@@ -8,6 +8,8 @@ import uni.hcmut.wcmanager.enums.GroupName;
 import uni.hcmut.wcmanager.events.Event;
 import uni.hcmut.wcmanager.events.RedCardEvent;
 import uni.hcmut.wcmanager.events.YellowCardEvent;
+import uni.hcmut.wcmanager.randomizers.EventGenerator;
+import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,11 @@ public class TeamPerformanceTest {
         TeamInMatch team1 = new TeamInMatch(TeamHome);
         PlayerInMatch playerInMatch = new PlayerInMatch(playerHome.get(0), team1);
         Event RedCard = new YellowCardEvent(match, playerInMatch, 10);
+        List<Event> events = new ArrayList<>();
+        events.add(RedCard);
+        EventGenerator generator = new EventGenerator(events);
+        PenaltyShootoutGenerator shootoutGenerator = new PenaltyShootoutGenerator();
+        match.start(generator, shootoutGenerator);
         match.handleEvent(RedCard);
         teamPerformances.update(match);
         Assert.assertEquals(1, teamPerformances.getYellowCard());

@@ -3,6 +3,8 @@ package uni.hcmut.wcmanager.entities;
 import uni.hcmut.wcmanager.enums.MatchType;
 import uni.hcmut.wcmanager.enums.RoundName;
 import uni.hcmut.wcmanager.events.Event;
+import uni.hcmut.wcmanager.randomizers.EventGenerator;
+import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 import uni.hcmut.wcmanager.utils.DbUtils;
 
 import javax.persistence.*;
@@ -24,6 +26,8 @@ public abstract class Match {
     }
 
     public abstract void start();
+//    public abstract void start(EventGenerator generator);
+    public abstract void start(EventGenerator eventGenerator, PenaltyShootoutGenerator shootoutGenerator);
 
     protected void finish() {
         DbUtils.persistMatch(this);
