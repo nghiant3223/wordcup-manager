@@ -25,14 +25,16 @@ public class InjuryEvent extends Event {
 
         // If player's team cannot substitute player
         if (!playersTeam.isAbleToSubstitute()) {
+            String teamName = playersTeam.getTeam().getName();
+            System.out.printf("❎ %s is not able to substitute player\n", teamName);
+
+            playersTeam.sendPlayerOff(actor);
+
             if (playersTeam.getPlayingPlayers().size() < MatchRule.MIN_PLAYING_PLAYER_COUNT) {
                 match.endDueToLackOfPlayers(playersTeam);
                 return;
             }
 
-            playersTeam.sendPlayerOff(actor);
-            String teamName = playersTeam.getTeam().getName();
-            System.out.printf("❎ %s is not able to substitute player\n", teamName);
             return;
         }
 
