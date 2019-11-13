@@ -172,6 +172,37 @@ public class DrawMatchTest {
     }
 
     @Test
+    public void test_event_with_red_card_and_yellow_card(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numRedCard = size - 7;
+
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event yellowCard = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event yellowCard2 = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 22);
+
+        events.add(goal);
+        events.add(yellowCard);
+        events.add(yellowCard2);
+
+        for(int i = 0; i < numRedCard; i++){
+            Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+1), i + 30);
+            events.add(redCard);
+        }
+
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
+    }
+
+    @Test
     public void test_event_with_substitution_injury(){
 
         TeamInMatch homeTeam = matchDraw.getHomeTeam();
