@@ -116,11 +116,13 @@ public class DbMatch {
         dbMatch.setHomeResult(homeTeam.getGoalFor());
         dbMatch.setAwayResult(awayTeam.getGoalFor());
 
-        dbMatch.setRoundId(match.getRoundName().getId());
-
         if (match.getPenaltyResult() != null) {
-            dbMatch.homePenalty = homeTeam.getPenaltyShootScore();
-            dbMatch.awayPenalty = awayTeam.getPenaltyShootScore();
+            dbMatch.setHomePenalty(homeTeam.getPenaltyShootScore());
+            dbMatch.setAwayPenalty(awayTeam.getPenaltyShootScore());
+        }
+
+        if (match.getRoundName() != null) {
+            dbMatch.setRoundId(match.getRoundName().getId());
         }
 
         if (winner != null) {

@@ -17,7 +17,14 @@ public class KnockoutMatch extends Match {
             throw new InvalidParameterException("eventGenerator mustn't be null");
         }
 
-        enterMainHalvesAndExtraHalves(eventGenerator);
+        try {
+            enterMainHalvesAndExtraHalves(eventGenerator);
+        } catch (InvalidParameterException e) {
+            if (shootoutGenerator != null) {
+                throw e;
+            }
+        }
+
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves
         if (isFinished()) {
@@ -53,7 +60,6 @@ public class KnockoutMatch extends Match {
 
     public void start() {
         EventGenerator generator = new EventGenerator();
-        enterMainHalvesAndExtraHalves(generator);
 
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves
