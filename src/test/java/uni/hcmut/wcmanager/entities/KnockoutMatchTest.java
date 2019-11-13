@@ -419,6 +419,29 @@ public class KnockoutMatchTest {
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
     }
 
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_lack(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 10);
+        Event awayGoal = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 20);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+        events.add(awayGoal);
+
+        EventGenerator generator = new EventGenerator(events);
+
+        boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}};
+        PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+
+    }
+
     @Test
     public void test_Penalty_gte_5(){
 
