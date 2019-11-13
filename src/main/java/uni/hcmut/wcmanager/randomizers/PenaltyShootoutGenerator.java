@@ -31,7 +31,7 @@ public class PenaltyShootoutGenerator {
                 int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
                 int remainingTurn = MatchRule.MAX_PENALTY_SHOOTOUT - i - 1;
                 if (scoreDiff > remainingTurn) {
-                    return;
+                    throw new InvalidParameterException("Redundant shootout turn");
                 }
             }
 
