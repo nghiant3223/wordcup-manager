@@ -1,8 +1,10 @@
 package uni.hcmut.wcmanager.events;
 
+import uni.hcmut.wcmanager.constants.MatchRule;
 import uni.hcmut.wcmanager.entities.Match;
 import uni.hcmut.wcmanager.entities.PlayerInMatch;
 
+import java.security.InvalidParameterException;
 import java.util.Date;
 
 public abstract class Event {
@@ -11,6 +13,10 @@ public abstract class Event {
     protected Match match;
 
     public Event(Match match, PlayerInMatch actor, int at) {
+        if (at >= MatchRule.EXTRA_FULL_DURATION) {
+            throw new InvalidParameterException("Event time must be < 120");
+        }
+
         this.match = match;
         this.actor = actor;
         this.at = at;
