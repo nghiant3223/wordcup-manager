@@ -15,6 +15,10 @@ public class EventGenerator {
     private Random random = new Random();
 
     public EventGenerator(List<Event> events) {
+        if (EventUtils.isEventListInAscendingOrder(events)) {
+            throw new InvalidParameterException("Event must be sorted in ascending order");
+        }
+
         this.events = events;
     }
 
@@ -112,8 +116,6 @@ public class EventGenerator {
         if (!anyEventOccursAfterMin105 && homeTeam.getGoalFor() == awayTeam.getGoalFor()) {
             throw new InvalidParameterException("Match cannot be a draw");
         }
-
-        match.setFinished();
     }
 
     private void generateEventInMainTime(Match match) {
@@ -161,7 +163,7 @@ public class EventGenerator {
 
         Event event;
 
-        if (LangUtils.intInRange(p, 0, 50)) {
+        if (LangUtils.intInRange(p, 0, 40)) {
             event = new GoalEvent(match, actor, at);
         } else if (LangUtils.intInRange(p, 50, 70)) {
             event = new YellowCardEvent(match, actor, at);
@@ -169,8 +171,10 @@ public class EventGenerator {
             event = new RedCardEvent(match, actor, at);
         } else if (LangUtils.intInRange(p, 80, 90)) {
             event = new SubstitutionEvent(match, actor, at);
-        } else {
+        } else if (LangUtils.intInRange(p, 40, 50)) {
             event = new InjuryEvent(match, actor, at);
+        } else {
+            event = new OwnGoalEvent(match, actor, at);
         }
 
         return event;
