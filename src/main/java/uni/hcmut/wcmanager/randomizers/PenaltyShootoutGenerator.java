@@ -27,13 +27,23 @@ public class PenaltyShootoutGenerator {
         TeamInMatch awayTeam = match.getAwayTeam();
 
         if (shootout != null) {
-            for (int i = 0; i < MAX_PENALTY_SHOOTOUT; i++) {
-                examineEachShootoutTurn(homeTeam, awayTeam, i);
+            int i;
 
+            for (i = 0; i < MAX_PENALTY_SHOOTOUT && i < shootout.length; i++) {
                 int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
-                int remainingTurn = MAX_PENALTY_SHOOTOUT - i - 1;
+                int remainingTurn = MAX_PENALTY_SHOOTOUT - i;
                 if (scoreDiff > remainingTurn) {
                     throw new InvalidParameterException("Redundant shootout turn");
+                }
+
+                examineEachShootoutTurn(homeTeam, awayTeam, i);
+            }
+
+            if (i < MAX_PENALTY_SHOOTOUT) {
+                int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
+                int remainingTurn = MAX_PENALTY_SHOOTOUT - i;
+                if (scoreDiff <= remainingTurn) {
+                    throw new InvalidParameterException("Not enough shootout turn provided");
                 }
             }
 
@@ -43,7 +53,7 @@ public class PenaltyShootoutGenerator {
                 throw new InvalidParameterException("Redundant shootout turn");
             }
 
-            for (int i = MAX_PENALTY_SHOOTOUT; i < shootout.length; i++) {
+            for (i = MAX_PENALTY_SHOOTOUT; i < shootout.length; i++) {
                 examineEachShootoutTurn(homeTeam, awayTeam, i);
 
                 // If penalty shootout result is determined in 5 turns but there's still turn provided

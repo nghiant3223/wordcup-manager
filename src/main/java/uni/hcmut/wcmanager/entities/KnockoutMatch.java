@@ -20,8 +20,10 @@ public class KnockoutMatch extends Match {
         try {
             enterMainHalvesAndExtraHalves(eventGenerator);
         } catch (InvalidParameterException e) {
-            if (e.getMessage().equals("Match has already finished") && shootoutGenerator != null
-                    || e.getMessage().equals("Match cannot be a draw") && shootoutGenerator == null) {
+            String errorMessage = e.getMessage();
+            if (errorMessage.equals("Match has already finished due to silver-goal rule")
+                    || errorMessage.equals("Match has already finished") && shootoutGenerator != null
+                    || errorMessage.equals("Match cannot be a draw") && shootoutGenerator == null) {
                 throw e;
             }
         }
@@ -29,6 +31,10 @@ public class KnockoutMatch extends Match {
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves
         if (isFinished()) {
+            if (shootoutGenerator != null) {
+                throw new InvalidParameterException("Match has already finished");
+            }
+
             setWinner();
             finish();
             return;
@@ -36,6 +42,10 @@ public class KnockoutMatch extends Match {
 
         // If there is a team who have higher goal than the other after 90min or 105min or 120min
         if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+            if (shootoutGenerator != null) {
+                throw new InvalidParameterException("Match has already finished");
+            }
+
             setFinished();
             setWinner();
             finish();
@@ -60,6 +70,7 @@ public class KnockoutMatch extends Match {
 
     public void start() {
         EventGenerator generator = new EventGenerator();
+        enterMainHalvesAndExtraHalves(generator);
 
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves

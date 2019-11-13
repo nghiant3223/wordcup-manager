@@ -25,7 +25,7 @@ public class DbMatch {
     private Team winnerTeam;
 
     @Column(name = "round_id")
-    private int roundId;
+    private Integer roundId;
 
     @Column(name = "home_result")
     private int homeResult;
@@ -114,7 +114,7 @@ public class DbMatch {
         dbMatch.setHomeTeam(awayTeam.getTeam());
 
         dbMatch.setHomeResult(homeTeam.getGoalFor());
-        dbMatch.setHomeResult(awayTeam.getGoalFor());
+        dbMatch.setAwayResult(awayTeam.getGoalFor());
 
         if (match.getPenaltyResult() != null) {
             dbMatch.setHomePenalty(homeTeam.getPenaltyShootScore());

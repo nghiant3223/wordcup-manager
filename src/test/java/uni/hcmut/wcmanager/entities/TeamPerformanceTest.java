@@ -24,7 +24,7 @@ public class TeamPerformanceTest {
     Team TeamAway = new Team();
     List<Player> playerHome = new ArrayList<Player>();
     List<Player> playerAway = new ArrayList<Player>();
-    DrawableMatch match; // cho nay` tao kieu DrawableMatch de tét, k can` them method kia vo Match dau
+    DrawableMatch match;
     Session session;
     SessionFactory factory;
 
