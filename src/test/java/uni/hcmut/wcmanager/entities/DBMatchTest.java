@@ -236,7 +236,7 @@ public class DBMatchTest {
 
         EventGenerator generator = new EventGenerator(events);
 
-        boolean[][] shootout = {{true, false}, {true, true}, {true, true}, {true, true}, {true, true}};
+        boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
         matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
