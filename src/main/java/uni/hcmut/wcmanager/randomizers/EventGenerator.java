@@ -3,6 +3,7 @@ package uni.hcmut.wcmanager.randomizers;
 import uni.hcmut.wcmanager.constants.MatchRule;
 import uni.hcmut.wcmanager.entities.*;
 import uni.hcmut.wcmanager.events.*;
+import uni.hcmut.wcmanager.utils.EventUtils;
 import uni.hcmut.wcmanager.utils.LangUtils;
 
 import java.security.InvalidParameterException;
@@ -64,25 +65,28 @@ public class EventGenerator {
         boolean anyEventOccursAfterMin105 = false;
         boolean anyEventOccursAfterMin90 = false;
 
-        for (Event e : events) {
+        for (int i = 0; i < events.size(); i++) {
+            Event e = events.get(i);
+
             // If match's already finished due to lack of players, we dont generate event anymore
             if (match.isFinished()) {
                 throw new InvalidParameterException("Match has already finished");
             }
 
             if (e.getAt() >= MatchRule.FULL_DURATION) {
-                if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                if (EventUtils.isEventRightAfterMinute(events, i, MatchRule.FULL_DURATION)
+                        && homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
                     throw new InvalidParameterException("Match has already finished");
                 }
 
                 anyEventOccursAfterMin90 = true;
             }
 
-
             if (e.getAt() >= MatchRule.FULL_DURATION + MatchRule.EXTRA_HALF_DURATION) {
                 // If silver-goal rule happens,
                 // but there is still a event
-                if (homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
+                if (EventUtils.isEventRightAfterMinute(events, i, MatchRule.EXTRA_FULL_DURATION)
+                        && homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
                     throw new InvalidParameterException("Match has already finished");
                 }
 
