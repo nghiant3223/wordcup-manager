@@ -103,24 +103,6 @@ public class KnockoutMatchTest {
         matchKnockout.start(generator, penalty);
     }
 
-    @Test(expected = InvalidParameterException.class)
-    public void test_Penalty_no_event(){
-        TeamPerformance teamPerformancesHome = new TeamPerformance(TeamHome, group);
-        TeamPerformance teamPerformancesAway = new TeamPerformance(TeamAway, group);
-
-        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
-        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
-
-
-        List<Event> events = new ArrayList<>();
-
-        EventGenerator generator = new EventGenerator(events);
-        PenaltyShootoutGenerator penalty = null;
-
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
-        matchKnockout.start(generator, penalty);
-    }
-
     @Test
     public void test_winner_before_90(){
 
@@ -180,6 +162,30 @@ public class KnockoutMatchTest {
         events.add(awayGoal);
         events.add(awayGoal1);
         events.add(awayGoal2);
+
+        EventGenerator generator = new EventGenerator(events);
+        PenaltyShootoutGenerator penalty = null;
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+
+        Assert.assertEquals(awayTeam, matchKnockout.getWinner());
+    }
+
+    @Test
+    public void test_winner_after_90_minute(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event awayGoal1 = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 91);
+        Event awayGoal2 = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 92);
+        Event awayGoal3 = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 93);
+
+        List<Event> events = new ArrayList<>();
+        events.add(awayGoal1);
+        events.add(awayGoal2);
+        events.add(awayGoal3);
 
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
@@ -264,6 +270,49 @@ public class KnockoutMatchTest {
         matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
         matchKnockout.start(generator, penalty);
 
+    }
+
+    @Test
+    public void test_silver_goal(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 88);
+        Event awayGoal = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 89);
+        Event awayGoal1 = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 91);
+        Event awayGoal2 = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 105);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+        events.add(awayGoal);
+        events.add(awayGoal1);
+        events.add(awayGoal2);
+
+        EventGenerator generator = new EventGenerator(events);
+        PenaltyShootoutGenerator penalty = null;
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+
+    }
+
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_no_event(){
+        TeamPerformance teamPerformancesHome = new TeamPerformance(TeamHome, group);
+        TeamPerformance teamPerformancesAway = new TeamPerformance(TeamAway, group);
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+
+        List<Event> events = new ArrayList<>();
+
+        EventGenerator generator = new EventGenerator(events);
+        PenaltyShootoutGenerator penalty = null;
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
     }
 
     @Test
