@@ -218,7 +218,7 @@ public class DrawMatchTest {
         events.add(goal);
 
         for(int i = 0; i < numInjuryEvent; i++){
-            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+3), i + 30);
+            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i), i + 30);
             events.add(injury);
         }
 
@@ -243,11 +243,11 @@ public class DrawMatchTest {
         Event subStitution1 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 22);
         Event subStitution2 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 23);
 
+
         events.add(goal);
         events.add(subStitution);
         events.add(subStitution1);
         events.add(subStitution2);
-
         for(int i = 0; i < numInjuryEvent; i++){
             Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+3), i + 30);
             events.add(injury);
@@ -258,6 +258,41 @@ public class DrawMatchTest {
         Assert.assertEquals(awayTeam, matchDraw.getWinner());
 
     }
+
+    @Test
+    public void test_event_with_redcard_and_injury_and_substitution(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        System.out.println(size);
+        int numInjuryEvent = size - 7;
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event subStitution = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event subStitution1 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 22);
+        Event subStitution2 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 23);
+        Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(3), 24);
+
+        events.add(goal);
+        events.add(subStitution);
+        events.add(subStitution1);
+        events.add(subStitution2);
+        events.add(redCard);
+
+        for(int i = 0; i < numInjuryEvent; i++){
+            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+4), i + 30);
+            events.add(injury);
+        }
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
+    }
+
 
     @After
     public void finish(){
