@@ -644,7 +644,7 @@ public class KnockoutMatchTest {
         matchKnockout.start(generator, penalty);
     }
 
-    @Test(expected = InvalidParameterException.class)
+    @Test
     public void test_Penalty_gte_5(){
 
         TeamInMatch homeTeam = matchKnockout.getHomeTeam();
@@ -664,9 +664,11 @@ public class KnockoutMatchTest {
 
         matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
         matchKnockout.start(generator, penalty);
+
+        Assert.assertEquals(homeTeam, matchKnockout.getWinner());
     }
 
-    @Test
+    @Test(expected = InvalidParameterException.class)
     public void test_Penalty_gte_5_wrong_redundant(){
 
         TeamInMatch homeTeam = matchKnockout.getHomeTeam();
@@ -686,10 +688,67 @@ public class KnockoutMatchTest {
 
         matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
         matchKnockout.start(generator, penalty);
-
-        Assert.assertEquals(homeTeam, matchKnockout.getWinner());
     }
 
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_but_finish_match(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 10);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+
+        EventGenerator generator = new EventGenerator(events);
+
+        boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
+        PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+    }
+
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_but_finish_match_in_first_extra_time(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 92);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+
+        EventGenerator generator = new EventGenerator(events);
+
+        boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
+        PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+    }
+
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_but_finish_match_in_2nd_extra_time(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 106);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+
+        EventGenerator generator = new EventGenerator(events);
+
+        boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
+        PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+    }
 
 
     @After

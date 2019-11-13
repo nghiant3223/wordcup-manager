@@ -41,7 +41,7 @@ public class PenaltyShootoutGenerator {
 
             if (i < MAX_PENALTY_SHOOTOUT) {
                 int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
-                int remainingTurn = MAX_PENALTY_SHOOTOUT - i - 1;
+                int remainingTurn = MAX_PENALTY_SHOOTOUT - i;
                 if (scoreDiff <= remainingTurn) {
                     throw new InvalidParameterException("Not enough shootout turn provided");
                 }
