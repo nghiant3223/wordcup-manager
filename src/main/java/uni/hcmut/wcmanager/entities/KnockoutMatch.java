@@ -48,8 +48,7 @@ public class KnockoutMatch extends Match {
         homeTeam.initPenaltyShootoutHistory();
         awayTeam.initPenaltyShootoutHistory();
 
-        PenaltyShootoutGenerator simulator = new PenaltyShootoutGenerator();
-        enterPenaltyShootout(simulator);
+        enterPenaltyShootout(shootoutGenerator);
 
         penaltyResult[0] = homeTeam.getPenaltyShootScore();
         penaltyResult[1] = awayTeam.getPenaltyShootScore();
