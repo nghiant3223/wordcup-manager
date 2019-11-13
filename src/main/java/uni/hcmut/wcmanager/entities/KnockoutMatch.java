@@ -20,8 +20,10 @@ public class KnockoutMatch extends Match {
         try {
             enterMainHalvesAndExtraHalves(eventGenerator);
         } catch (InvalidParameterException e) {
-            if (e.getMessage().equals("Match has already finished") && shootoutGenerator != null
-                    || e.getMessage().equals("Match cannot be a draw") && shootoutGenerator == null) {
+            String errorMessage = e.getMessage();
+            if (errorMessage.equals("Match has already finished due to silver-goal rule")
+                    || errorMessage.equals("Match has already finished") && shootoutGenerator != null
+                    || errorMessage.equals("Match cannot be a draw") && shootoutGenerator == null) {
                 throw e;
             }
         }
