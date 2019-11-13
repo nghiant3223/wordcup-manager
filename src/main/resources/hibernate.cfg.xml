@@ -8,7 +8,9 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3307/fifa_wc</property>
+        <property name="connection.url">
+            jdbc:mysql://sql12311864:zg8ST1bDs5@sql12.freemysqlhosting.net/sql12311864
+        </property>
         <property name="connection.username">root</property>
         <property name="connection.password">password</property>
 
