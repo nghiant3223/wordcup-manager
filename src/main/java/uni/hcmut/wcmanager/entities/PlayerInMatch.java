@@ -46,4 +46,15 @@ public class PlayerInMatch {
     public TeamInMatch getTeamInMatch() {
         return teamInMatch;
     }
+
+    public boolean isPlaying() {
+        return teamInMatch.getPlayingPlayers().contains(this);
+    }
+
+    // Player is still in match if he is not sent off yet by red card
+    // He may be either playing or sitting on bench
+    public boolean isStillInMatch() {
+        return teamInMatch.getPlayingPlayers().contains(this)
+                || teamInMatch.getBenchPlayers().contains(this);
+    }
 }

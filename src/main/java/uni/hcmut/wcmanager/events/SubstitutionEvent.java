@@ -6,6 +6,8 @@ import uni.hcmut.wcmanager.entities.TeamInMatch;
 import uni.hcmut.wcmanager.events.Event;
 import uni.hcmut.wcmanager.randomizers.CoachSimulator;
 
+import java.security.InvalidParameterException;
+
 public class SubstitutionEvent extends Event {
     public SubstitutionEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
@@ -13,6 +15,10 @@ public class SubstitutionEvent extends Event {
 
     @Override
     public void handle() {
+        if (!actor.isPlaying()) {
+            throw new InvalidParameterException("Player is not playing");
+        }
+
         TeamInMatch outPlayersTeam = actor.getTeamInMatch();
 
         if (!outPlayersTeam.isAbleToSubstitute()) {

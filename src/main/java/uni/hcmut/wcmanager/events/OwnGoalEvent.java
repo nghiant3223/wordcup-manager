@@ -4,6 +4,8 @@ import uni.hcmut.wcmanager.entities.Match;
 import uni.hcmut.wcmanager.entities.PlayerInMatch;
 import uni.hcmut.wcmanager.entities.TeamInMatch;
 
+import java.security.InvalidParameterException;
+
 public class OwnGoalEvent extends Event {
 
     public OwnGoalEvent(Match match, PlayerInMatch actor, int at) {
@@ -12,6 +14,10 @@ public class OwnGoalEvent extends Event {
 
     @Override
     public void handle() {
+        if (!actor.isPlaying()) {
+            throw new InvalidParameterException("Player is not playing");
+        }
+
         TeamInMatch playersTeam = actor.getTeamInMatch();
         playersTeam.concede();
 
