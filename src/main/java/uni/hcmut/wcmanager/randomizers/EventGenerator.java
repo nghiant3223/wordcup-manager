@@ -108,6 +108,8 @@ public class EventGenerator {
         if (!anyEventOccursAfterMin105 && homeTeam.getGoalFor() == awayTeam.getGoalFor()) {
             throw new InvalidParameterException("Match cannot be a draw");
         }
+
+        match.setFinished();
     }
 
     private void generateEventInMainTime(Match match) {
