@@ -114,7 +114,7 @@ public class DbMatch {
         dbMatch.setHomeTeam(awayTeam.getTeam());
 
         dbMatch.setHomeResult(homeTeam.getGoalFor());
-        dbMatch.setHomeResult(awayTeam.getGoalFor());
+        dbMatch.setAwayResult(awayTeam.getGoalFor());
 
         dbMatch.setRoundId(match.getRoundName().getId());
 
