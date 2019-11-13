@@ -15,7 +15,7 @@ public class EventGenerator {
     private Random random = new Random();
 
     public EventGenerator(List<Event> events) {
-        if (EventUtils.isEventListInAscendingOrder(events)) {
+        if (!EventUtils.isEventListInAscendingOrder(events)) {
             throw new InvalidParameterException("Event must be sorted in ascending order");
         }
 
@@ -89,7 +89,7 @@ public class EventGenerator {
             if (e.getAt() >= MatchRule.FULL_DURATION + MatchRule.EXTRA_HALF_DURATION) {
                 // If silver-goal rule happens,
                 // but there is still a event
-                if (EventUtils.isEventRightAfterMinute(events, i, MatchRule.EXTRA_FULL_DURATION)
+                if (EventUtils.isEventRightAfterMinute(events, i, MatchRule.FULL_DURATION + MatchRule.EXTRA_HALF_DURATION)
                         && homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
                     throw new InvalidParameterException("Match has already finished");
                 }
