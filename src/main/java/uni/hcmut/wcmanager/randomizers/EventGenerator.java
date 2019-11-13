@@ -91,7 +91,7 @@ public class EventGenerator {
                 // but there is still a event
                 if (EventUtils.isEventRightAfterMinute(events, i, MatchRule.FULL_DURATION + MatchRule.EXTRA_HALF_DURATION)
                         && homeTeam.getGoalFor() != awayTeam.getGoalFor()) {
-                    throw new InvalidParameterException("Match has already finished");
+                    throw new InvalidParameterException("Match has already finished due to silver-goal rule");
                 }
 
                 anyEventOccursAfterMin105 = true;
