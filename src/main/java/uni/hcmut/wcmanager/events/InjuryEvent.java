@@ -7,6 +7,8 @@ import uni.hcmut.wcmanager.entities.TeamInMatch;
 import uni.hcmut.wcmanager.events.Event;
 import uni.hcmut.wcmanager.randomizers.CoachSimulator;
 
+import java.security.InvalidParameterException;
+
 public class InjuryEvent extends Event {
 
     public InjuryEvent(Match match, PlayerInMatch actor, int at) {
@@ -15,6 +17,10 @@ public class InjuryEvent extends Event {
 
     @Override
     public void handle() {
+        if (!actor.isPlaying()) {
+            throw new InvalidParameterException("Player is not playing");
+        }
+
         TeamInMatch playersTeam = actor.getTeamInMatch();
 
         // If player's team cannot substitute player

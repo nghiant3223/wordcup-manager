@@ -5,6 +5,8 @@ import uni.hcmut.wcmanager.entities.PlayerInMatch;
 import uni.hcmut.wcmanager.entities.TeamInMatch;
 import uni.hcmut.wcmanager.events.CardEvent;
 
+import java.security.InvalidParameterException;
+
 public class YellowCardEvent extends CardEvent {
     public YellowCardEvent(Match match, PlayerInMatch actor, int at) {
         super(match, actor, at);
@@ -12,6 +14,10 @@ public class YellowCardEvent extends CardEvent {
 
     @Override
     public void handle() {
+        if (!actor.isStillInMatch()) {
+            throw new InvalidParameterException("Player is not playing");
+        }
+
         actor.incrementYellowCard();
 
         TeamInMatch playersTeam = actor.getTeamInMatch();
