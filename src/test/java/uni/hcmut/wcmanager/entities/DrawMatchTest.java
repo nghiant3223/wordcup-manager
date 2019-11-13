@@ -26,6 +26,7 @@ public class DrawMatchTest {
     Team TeamAway = new Team();
     List<Player> playerHome = new ArrayList<Player>();
     List<Player> playerAway = new ArrayList<Player>();
+
     DbMatch matchDB = new DbMatch();
     DrawableMatch matchDraw;
     Group group = new Group(GroupName.A);
@@ -120,6 +121,18 @@ public class DrawMatchTest {
         EventGenerator generator = new EventGenerator(events);
         matchDraw.start(generator);
     }
+    @Test
+    public void test_event_with_red_card9(){
+        try{
+            int x = 0;
+            int y = 1/x;
+            Assert.assertEquals(y, 1);
+        }
+        catch(Exception e){
+            Assert.assertTrue(e instanceof ArithmeticException);
+        }
+
+    }
 
     @Test(expected = InvalidParameterException.class)
     public void test_event_with_red_card(){
@@ -132,12 +145,15 @@ public class DrawMatchTest {
         Event redCard1 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 30);
         Event redCard2 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 30);
         Event redCard3 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(4), 30);
+        Event redCard4 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(4), 30);
 
         List<Event> events = new ArrayList<>();
         events.add(goal);
         events.add(redCard);
         events.add(redCard1);
-        events.add(redCard2)
+        events.add(redCard2);
+        events.add(redCard3);
+        events.add(redCard4);
 
         EventGenerator generator = new EventGenerator(events);
         matchDraw.start(generator);
