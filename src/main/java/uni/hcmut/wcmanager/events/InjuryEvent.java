@@ -30,6 +30,7 @@ public class InjuryEvent extends Event {
                 return;
             }
 
+            playersTeam.sendPlayerOff(actor);
             String teamName = playersTeam.getTeam().getName();
             System.out.printf("❎ %s is not able to substitute player\n", teamName);
             return;
