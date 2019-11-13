@@ -202,31 +202,6 @@ public class DrawMatchTest {
 
     }
 
-    @Test
-    public void test_event_with_only_injury(){
-
-        TeamInMatch homeTeam = matchDraw.getHomeTeam();
-        TeamInMatch awayTeam = matchDraw.getAwayTeam();
-
-
-        int size = homeTeam.getPlayingPlayers().size();
-        System.out.println(size);
-        int numInjuryEvent = size - 3;
-        List<Event> events = new ArrayList<>();
-        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
-
-        events.add(goal);
-
-        for(int i = 0; i < numInjuryEvent; i++){
-            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i), i + 30);
-            events.add(injury);
-        }
-
-        EventGenerator generator = new EventGenerator(events);
-        matchDraw.start(generator);
-        Assert.assertEquals(awayTeam, matchDraw.getWinner());
-
-    }
 
     @Test
     public void test_event_with_substitution_injury(){
