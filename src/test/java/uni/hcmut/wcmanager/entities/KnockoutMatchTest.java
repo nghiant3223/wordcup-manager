@@ -750,6 +750,26 @@ public class KnockoutMatchTest {
         matchKnockout.start(generator, penalty);
     }
 
+    @Test(expected = InvalidParameterException.class)
+    public void test_Penalty_but_shootout_empty(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 106);
+
+        List<Event> events = new ArrayList<>();
+        events.add(goal);
+
+        EventGenerator generator = new EventGenerator(events);
+
+        boolean[][] shootout = {};
+        PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
+
+        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+    }
+
 
     @After
     public void finish(){
