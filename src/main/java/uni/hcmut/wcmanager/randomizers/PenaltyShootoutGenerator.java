@@ -25,12 +25,14 @@ public class PenaltyShootoutGenerator {
         TeamInMatch awayTeam = match.getAwayTeam();
 
         if (shootout != null) {
-            if (shootout.length < MatchRule.MAX_PENALTY_SHOOTOUT) {
-                throw new InvalidParameterException("Shootout must have at least 5 turns");
-            }
-
-            for (int i = MatchRule.MAX_PENALTY_SHOOTOUT; i < shootout.length; i++) {
+            for (int i = 0; i < shootout.length; i++) {
                 examineEachShootoutTurn(homeTeam, awayTeam, i);
+
+                int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
+                int remainingTurn = MatchRule.MAX_PENALTY_SHOOTOUT - i - 1;
+                if (scoreDiff > remainingTurn) {
+                    return;
+                }
             }
 
             // If penalty shootout result is determined in 5 turn but there's still turn provided
