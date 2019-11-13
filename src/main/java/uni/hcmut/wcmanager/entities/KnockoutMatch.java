@@ -17,7 +17,15 @@ public class KnockoutMatch extends Match {
             throw new InvalidParameterException("eventGenerator mustn't be null");
         }
 
-        enterMainHalvesAndExtraHalves(eventGenerator);
+        try {
+            enterMainHalvesAndExtraHalves(eventGenerator);
+        } catch (InvalidParameterException e) {
+            if (e.getMessage().equals("Match has already finished") && shootoutGenerator != null
+                    || e.getMessage().equals("Match cannot be a draw") && shootoutGenerator == null) {
+                throw e;
+            }
+        }
+
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves
         if (isFinished()) {
@@ -40,8 +48,7 @@ public class KnockoutMatch extends Match {
         homeTeam.initPenaltyShootoutHistory();
         awayTeam.initPenaltyShootoutHistory();
 
-        PenaltyShootoutGenerator simulator = new PenaltyShootoutGenerator();
-        enterPenaltyShootout(simulator);
+        enterPenaltyShootout(shootoutGenerator);
 
         penaltyResult[0] = homeTeam.getPenaltyShootScore();
         penaltyResult[1] = awayTeam.getPenaltyShootScore();
@@ -53,7 +60,6 @@ public class KnockoutMatch extends Match {
 
     public void start() {
         EventGenerator generator = new EventGenerator();
-        enterMainHalvesAndExtraHalves(generator);
 
         // If match's already finished due to lack of players
         // or winner is determined in main halves or extra halves
