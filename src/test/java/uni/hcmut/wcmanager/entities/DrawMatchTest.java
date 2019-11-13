@@ -293,6 +293,65 @@ public class DrawMatchTest {
 
     }
 
+    @Test(expected = InvalidParameterException.class)
+    public void test_event_with_redcard_and_injury_and_substitution_Wrong(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numInjuryEvent = size - 7;
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event subStitution = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event subStitution1 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 22);
+        Event subStitution2 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 23);
+        Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(3), 24);
+
+        events.add(goal);
+        events.add(subStitution);
+        events.add(subStitution1);
+        events.add(subStitution2);
+        events.add(redCard);
+
+        for(int i = 0; i < numInjuryEvent + 1; i++){
+            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+4), i + 30);
+            events.add(injury);
+        }
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+
+    }
+
+    @Test
+    public void test_event_with_injury_and_substitution_And_enough_people(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numInjuryEvent = size - 7;
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event subStitution = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event subStitution1 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 22);
+
+        events.add(goal);
+        events.add(subStitution);
+        events.add(subStitution1);
+
+        for(int i = 0; i < numInjuryEvent ; i++){
+            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+3), i + 30);
+            events.add(injury);
+        }
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(homeTeam, matchDraw.getWinner());
+    }
 
     @After
     public void finish(){
