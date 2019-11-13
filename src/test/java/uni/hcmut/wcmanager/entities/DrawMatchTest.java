@@ -9,10 +9,7 @@ import org.junit.Test;
 import uni.hcmut.wcmanager.constants.GameRule;
 import uni.hcmut.wcmanager.enums.GroupName;
 import uni.hcmut.wcmanager.enums.RoundName;
-import uni.hcmut.wcmanager.events.Event;
-import uni.hcmut.wcmanager.events.GoalEvent;
-import uni.hcmut.wcmanager.events.OwnGoalEvent;
-import uni.hcmut.wcmanager.events.RedCardEvent;
+import uni.hcmut.wcmanager.events.*;
 import uni.hcmut.wcmanager.randomizers.EventGenerator;
 import uni.hcmut.wcmanager.randomizers.PenaltyShootoutGenerator;
 import uni.hcmut.wcmanager.utils.HibernateUtils;
@@ -121,42 +118,119 @@ public class DrawMatchTest {
         EventGenerator generator = new EventGenerator(events);
         matchDraw.start(generator);
     }
+
     @Test
-    public void test_event_with_red_card9(){
-        try{
-            int x = 0;
-            int y = 1/x;
-            Assert.assertEquals(y, 1);
-        }
-        catch(Exception e){
-            Assert.assertTrue(e instanceof ArithmeticException);
-        }
-
-    }
-
-    @Test(expected = InvalidParameterException.class)
-    public void test_event_with_red_card(){
+    public void test_event_with_only_red_card(){
 
         TeamInMatch homeTeam = matchDraw.getHomeTeam();
         TeamInMatch awayTeam = matchDraw.getAwayTeam();
 
-        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 80);
-        Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 30);
-        Event redCard1 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 30);
-        Event redCard2 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 30);
-        Event redCard3 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(4), 30);
-        Event redCard4 = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(4), 30);
 
+        int size = homeTeam.getPlayingPlayers().size();
+        int numRedCard = size - 6;
         List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
         events.add(goal);
-        events.add(redCard);
-        events.add(redCard1);
-        events.add(redCard2);
-        events.add(redCard3);
-        events.add(redCard4);
+
+        for(int i = 0; i < numRedCard; i++){
+            Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(i), i + 30);
+            events.add(redCard);
+        }
 
         EventGenerator generator = new EventGenerator(events);
         matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
+    }
+
+    @Test
+    public void test_event_with_only_yellow_card(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numYellowCard = size - 6;
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        events.add(goal);
+
+        for(int i = 0; i < numYellowCard; i++){
+            Event yellowCard = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(i), i + 30);
+            events.add(yellowCard);
+        }
+        for(int i = 0; i < numYellowCard; i++){
+            Event yellowCard2 = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(i), i + 40);
+            events.add(yellowCard2);
+        }
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
+    }
+
+    @Test
+    public void test_event_with_red_card_and_yellow_card(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numRedCard = size - 7;
+
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event yellowCard = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event yellowCard2 = new YellowCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 22);
+
+        events.add(goal);
+        events.add(yellowCard);
+        events.add(yellowCard2);
+
+        for(int i = 0; i < numRedCard; i++){
+            Event redCard = new RedCardEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+1), i + 30);
+            events.add(redCard);
+        }
+
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
+    }
+
+    @Test
+    public void test_event_with_substitution_injury(){
+
+        TeamInMatch homeTeam = matchDraw.getHomeTeam();
+        TeamInMatch awayTeam = matchDraw.getAwayTeam();
+
+
+        int size = homeTeam.getPlayingPlayers().size();
+        int numInjuryEvent = size - 6;
+        List<Event> events = new ArrayList<>();
+        Event goal = new GoalEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 20);
+        Event subStitution = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(0), 21);
+        Event subStitution1 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(1), 22);
+        Event subStitution2 = new SubstitutionEvent(matchDraw, homeTeam.getPlayingPlayers().get(2), 23);
+
+        events.add(goal);
+        events.add(subStitution);
+        events.add(subStitution1);
+        events.add(subStitution2);
+
+        for(int i = 0; i < numInjuryEvent; i++){
+            Event injury = new InjuryEvent(matchDraw, homeTeam.getPlayingPlayers().get(i+3), i + 30);
+            events.add(injury);
+        }
+
+        EventGenerator generator = new EventGenerator(events);
+        matchDraw.start(generator);
+        Assert.assertEquals(awayTeam, matchDraw.getWinner());
+
     }
 
     @After
