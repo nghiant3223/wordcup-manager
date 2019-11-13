@@ -15,6 +15,10 @@ public class EventGenerator {
     private Random random = new Random();
 
     public EventGenerator(List<Event> events) {
+        if (EventUtils.isEventListInAscendingOrder(events)) {
+            throw new InvalidParameterException("Event must be sorted in ascending order");
+        }
+
         this.events = events;
     }
 
