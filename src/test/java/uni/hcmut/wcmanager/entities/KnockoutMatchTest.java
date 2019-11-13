@@ -78,7 +78,7 @@ public class KnockoutMatchTest {
 
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -100,7 +100,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -117,7 +117,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -141,7 +141,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(awayTeam, matchKnockout.getWinner());
@@ -167,7 +167,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(awayTeam, matchKnockout.getWinner());
@@ -191,7 +191,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(awayTeam, matchKnockout.getWinner());
@@ -219,7 +219,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -242,7 +242,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(awayTeam, matchKnockout.getWinner());
@@ -268,7 +268,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
     }
@@ -289,7 +289,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -311,7 +311,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(awayTeam, matchKnockout.getWinner());
@@ -333,7 +333,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -353,7 +353,25 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        matchKnockout.start(generator, penalty);
+
+        Assert.assertEquals(homeTeam, matchKnockout.getWinner());
+    }
+
+    @Test
+    public void test_winner_with_ownGoal_in_119_minutes(){
+
+        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
+        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
+
+        Event awayGoal = new OwnGoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 119);
+
+        List<Event> events = new ArrayList<>();;
+        events.add(awayGoal);
+
+        EventGenerator generator = new EventGenerator(events);
+        PenaltyShootoutGenerator penalty = null;
+
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -379,7 +397,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
     }
@@ -391,7 +409,7 @@ public class KnockoutMatchTest {
         EventGenerator generator = new EventGenerator(events);
         PenaltyShootoutGenerator penalty = null;
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -413,7 +431,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -437,7 +455,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -462,7 +480,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -484,7 +502,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}, {true, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -506,7 +524,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, false}, {true, false}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
     }
@@ -529,7 +547,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}, {true, true}, {true, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
     }
@@ -552,7 +570,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}, {true, true}, {true, true}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -574,7 +592,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -596,7 +614,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -618,7 +636,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -640,7 +658,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -662,7 +680,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
 
         Assert.assertEquals(homeTeam, matchKnockout.getWinner());
@@ -686,7 +704,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -706,7 +724,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -726,7 +744,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -746,7 +764,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {{true, true}, {true, true}, {true, true}, {true, true}, {true, true}, {true, false}, {false, true}};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
@@ -766,7 +784,7 @@ public class KnockoutMatchTest {
         boolean[][] shootout = {};
         PenaltyShootoutGenerator penalty = new PenaltyShootoutGenerator(shootout);
 
-        matchKnockout.setRoundName(RoundName.ROUND_OF_SIXTEEN);
+        
         matchKnockout.start(generator, penalty);
     }
 
