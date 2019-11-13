@@ -227,8 +227,8 @@ public class DBMatchTest {
         TeamInMatch homeTeam = matchKnockout.getHomeTeam();
         TeamInMatch awayTeam = matchKnockout.getAwayTeam();
 
-        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 106);
-        Event awayGoal = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 108);
+        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 10);
+        Event awayGoal = new GoalEvent(matchKnockout, awayTeam.getPlayingPlayers().get(0), 20);
 
         List<Event> events = new ArrayList<>();
         events.add(goal);
