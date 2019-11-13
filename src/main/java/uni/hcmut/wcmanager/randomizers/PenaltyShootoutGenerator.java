@@ -7,6 +7,8 @@ import uni.hcmut.wcmanager.entities.TeamInMatch;
 import java.security.InvalidParameterException;
 import java.util.Random;
 
+import static uni.hcmut.wcmanager.constants.MatchRule.MAX_PENALTY_SHOOTOUT;
+
 public class PenaltyShootoutGenerator {
     private static Random random = new Random();
 
@@ -25,11 +27,11 @@ public class PenaltyShootoutGenerator {
         TeamInMatch awayTeam = match.getAwayTeam();
 
         if (shootout != null) {
-            for (int i = 0; i < shootout.length; i++) {
+            for (int i = 0; i < MAX_PENALTY_SHOOTOUT; i++) {
                 examineEachShootoutTurn(homeTeam, awayTeam, i);
 
                 int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
-                int remainingTurn = MatchRule.MAX_PENALTY_SHOOTOUT - i - 1;
+                int remainingTurn = MAX_PENALTY_SHOOTOUT - i - 1;
                 if (scoreDiff > remainingTurn) {
                     throw new InvalidParameterException("Redundant shootout turn");
                 }
@@ -37,11 +39,11 @@ public class PenaltyShootoutGenerator {
 
             // If penalty shootout result is determined in 5 turn but there's still turn provided
             if (homeTeam.getPenaltyShootScore() != awayTeam.getPenaltyShootScore()
-                    && shootout.length > MatchRule.MAX_PENALTY_SHOOTOUT) {
+                    && shootout.length > MAX_PENALTY_SHOOTOUT) {
                 throw new InvalidParameterException("Redundant shootout turn");
             }
 
-            for (int i = MatchRule.MAX_PENALTY_SHOOTOUT; i < shootout.length; i++) {
+            for (int i = MAX_PENALTY_SHOOTOUT; i < shootout.length; i++) {
                 examineEachShootoutTurn(homeTeam, awayTeam, i);
 
                 // If penalty shootout result is determined in 5 turns but there's still turn provided
@@ -52,7 +54,7 @@ public class PenaltyShootoutGenerator {
             }
 
             // If all penalty shootout turns is considered but winner is not determined yet
-            if (homeTeam.getPenaltyShootScore() != awayTeam.getPenaltyShootScore()) {
+            if (homeTeam.getPenaltyShootScore() == awayTeam.getPenaltyShootScore()) {
                 throw new InvalidParameterException("Not enough shootout turn provided");
             }
 
@@ -62,11 +64,11 @@ public class PenaltyShootoutGenerator {
         TeamInMatch first = random.nextBoolean() ? match.getHomeTeam() : match.getAwayTeam();
         TeamInMatch second = first != match.getHomeTeam() ? match.getHomeTeam() : match.getAwayTeam();
 
-        for (int i = 0; i < MatchRule.MAX_PENALTY_SHOOTOUT; i++) {
+        for (int i = 0; i < MAX_PENALTY_SHOOTOUT; i++) {
             generateEachShootoutTurn(first, second);
 
             int scoreDiff = first.getPenaltyShootScore() - second.getPenaltyShootScore();
-            int remainingTurn = MatchRule.MAX_PENALTY_SHOOTOUT - i - 1;
+            int remainingTurn = MAX_PENALTY_SHOOTOUT - i - 1;
             if (scoreDiff > remainingTurn) {
                 return;
             }
