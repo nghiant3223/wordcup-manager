@@ -27,7 +27,7 @@ public class PenaltyShootoutGenerator {
         TeamInMatch awayTeam = match.getAwayTeam();
 
         if (shootout != null) {
-            for (int i = 0; i < MAX_PENALTY_SHOOTOUT; i++) {
+            for (int i = 0; i < MAX_PENALTY_SHOOTOUT && i < shootout.length; i++) {
                 int scoreDiff = homeTeam.getPenaltyShootScore() - awayTeam.getPenaltyShootScore();
                 int remainingTurn = MAX_PENALTY_SHOOTOUT - i - 1;
                 if (scoreDiff > remainingTurn) {
