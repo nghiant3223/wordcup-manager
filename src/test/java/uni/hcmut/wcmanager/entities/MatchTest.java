@@ -9,6 +9,7 @@ import uni.hcmut.wcmanager.entities.Player;
 import uni.hcmut.wcmanager.entities.Team;
 import uni.hcmut.wcmanager.entities.Match;
 import uni.hcmut.wcmanager.entities.TeamInMatch;
+import uni.hcmut.wcmanager.enums.MatchType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +102,46 @@ public class MatchTest {
         match.setRoundName(round);
         RoundName actual = match.getRoundName();
         Assert.assertEquals(round.getId(), actual.getId());
+    }
+
+    @Test
+    public void shouldCheckTeamCompetesInMatch1() {
+        //Case: True
+        TeamHome.setName("Viet Nam");
+        Boolean actual = match.checkTeamCompetesInMatch(TeamHome);
+        Assert.assertEquals(true, actual);
+    }
+
+    @Test
+    public void shouldCheckTeamCompetesInMatch2() {
+        //Case: False
+        Team anyTeam = new Team();
+        Boolean actual = match.checkTeamCompetesInMatch(anyTeam);
+        Assert.assertEquals(false, actual);
+    }
+
+    @Test
+    public void shouldEndDueToLackOfPlayers1() {
+        //Case: Check return true winner vs loser
+        TeamAway.setName("Thai Lan");
+        TeamHome.setName("Viet Nam");
+        TeamInMatch loser = new TeamInMatch(TeamAway);
+        match.endDueToLackOfPlayers(loser);
+        match.setWinner();
+        String actual = match.getWinner().getTeam().getName() + "-" + match.getOpponentTeam(match.getWinner()).getTeam().getName();
+        Assert.assertEquals("Viet Nam-Thai Lan", actual);
+    }
+
+    @Test
+    public void shouldEndDueToLackOfPlayers2() {
+        //Case: Check return true goals of winner vs loser
+        TeamAway.setName("Thai Lan");
+        TeamHome.setName("Viet Nam");
+        TeamInMatch loser = new TeamInMatch(TeamAway);
+        loser.setGoalFor(5);
+        match.endDueToLackOfPlayers(loser);
+        match.setWinner();
+        String actual = match.getWinner().getGoalFor() + "-" + match.getOpponentTeam(match.getWinner()).getGoalFor();
+        Assert.assertEquals("3-0", actual);
     }
 }
