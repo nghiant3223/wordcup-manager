@@ -872,31 +872,6 @@ public class KnockoutMatchTest {
 
     }
 
-    @Test
-    public void test_event_with_only_injury(){
-
-        TeamInMatch homeTeam = matchKnockout.getHomeTeam();
-        TeamInMatch awayTeam = matchKnockout.getAwayTeam();
-
-
-        int size = homeTeam.getPlayingPlayers().size();
-        int numInjuryEvent = size - 3;
-        List<Event> events = new ArrayList<>();
-        Event goal = new GoalEvent(matchKnockout, homeTeam.getPlayingPlayers().get(0), 20);
-
-        events.add(goal);
-
-        for(int i = 0; i < numInjuryEvent; i++){
-            Event injury = new InjuryEvent(matchKnockout, homeTeam.getPlayingPlayers().get(i), i + 30);
-            events.add(injury);
-        }
-
-        EventGenerator generator = new EventGenerator(events);
-        PenaltyShootoutGenerator penalty = null;
-        matchKnockout.start(generator, penalty);
-        Assert.assertEquals(awayTeam, matchKnockout.getWinner());
-
-    }
 
     @Test
     public void test_event_with_substitution_injury(){
