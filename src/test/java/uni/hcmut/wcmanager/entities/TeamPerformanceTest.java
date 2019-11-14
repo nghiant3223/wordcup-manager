@@ -97,21 +97,6 @@ public class TeamPerformanceTest {
     }
 
     @Test
-    public void Test_Update_MultiRedcard_TeamHome(){
-        TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
-        TeamInMatch homeTeam = match.getHomeTeam();
-        Event RedCard = new RedCardEvent(match, homeTeam.getPlayingPlayers().get(1), 10);
-        Event YellowCard = new YellowCardEvent(match, homeTeam.getPlayingPlayers().get(3), 10);
-        List<Event> events = new ArrayList<>();
-        events.add(RedCard);
-        events.add(YellowCard);
-        EventGenerator generator = new EventGenerator(events);
-        match.start(generator);
-        teamPerformances.update(match);
-        Assert.assertEquals(3, teamPerformances.getYellowCard());
-    }
-
-    @Test
     public void Test_Update_GoalFor_TeamHome(){
         TeamPerformance teamPerformances = new TeamPerformance(TeamHome, group);
         TeamInMatch homeTeam = match.getHomeTeam();
