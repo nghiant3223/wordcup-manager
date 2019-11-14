@@ -8,8 +8,7 @@ import uni.hcmut.wcmanager.entities.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-public class GoalEventTest {
-
+public class SubstituteEventTest {
     private PlayerInMatch playerInMatch;
     private TeamInMatch teamInMatch;
     private Match match;
@@ -43,37 +42,19 @@ public class GoalEventTest {
         this.playerInMatch = this.teamInMatch.getPlayingPlayers().get(0);
     }
 
-    @Test
-    public void checkHandleForIncrementGoalPlayer() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        Assert.assertTrue(this.playerInMatch.getGoalCount() == 1);
-    }
-
-    @Test
-    public void checkHandleForIncrementGoalTeam() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        Assert.assertTrue(this.teamInMatch.getGoalFor() == 2);
-    }
-
-    @Test
-    public void checkHandleForConcedeOpponentTeam() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 45);
-        goalEvent.handle();
-        Assert.assertTrue(this.match.getOpponentTeam(this.playerInMatch.getTeamInMatch()).getGoalAgainst() == 3);
-    }
-
     @Test(expected = InvalidParameterException.class)
     public void checkHandleCheckException() {
         PlayerInMatch benchPlayer = this.teamInMatch.getBenchPlayers().get(0);
-        GoalEvent goalEvent = new GoalEvent(this.match, benchPlayer, 15);
-        goalEvent.handle();
+        SubstitutionEvent substituteEvent = new SubstitutionEvent(this.match, benchPlayer, 15);
+        substituteEvent.handle();
+    }
+
+    @Test
+    public void checkHandleForAbleSubstitute() {
+        PlayerInMatch playingPlayer = this.teamInMatch.getPlayingPlayers().get(0);
+        SubstitutionEvent substituteEvent = new SubstitutionEvent(this.match, playingPlayer, 15);
+        substituteEvent.handle();
+
+        Assert.assertTrue(playingPlayer.getTeamInMatch().getSentOffPlayers().contains(playingPlayer));
     }
 }

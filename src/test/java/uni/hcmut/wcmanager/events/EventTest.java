@@ -8,8 +8,7 @@ import uni.hcmut.wcmanager.entities.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-public class GoalEventTest {
-
+public class EventTest {
     private PlayerInMatch playerInMatch;
     private TeamInMatch teamInMatch;
     private Match match;
@@ -40,40 +39,31 @@ public class GoalEventTest {
 
         this.teamInMatch = new TeamInMatch(teamHome);
 
-        this.playerInMatch = this.teamInMatch.getPlayingPlayers().get(0);
+        this.playerInMatch = new PlayerInMatch(players1.get(0), teamInMatch);
     }
 
     @Test
-    public void checkHandleForIncrementGoalPlayer() {
+    public void checkGetAt() {
         GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        Assert.assertTrue(this.playerInMatch.getGoalCount() == 1);
+        Assert.assertTrue(goalEvent.getAt() == 15);
     }
 
     @Test
-    public void checkHandleForIncrementGoalTeam() {
+    public void checkGetActor() {
         GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        Assert.assertTrue(this.teamInMatch.getGoalFor() == 2);
+        Assert.assertTrue(goalEvent.getActor().getTeamInMatch().getTeam().getName().equals("Đội Việt Nam"));
+        Assert.assertTrue(goalEvent.getActor().getTeamInMatch().getTeam().getPlayers().get(0).getFullname().equals("Nguyễn Văn 0"));
     }
 
     @Test
-    public void checkHandleForConcedeOpponentTeam() {
+    public void checkGetMatch() {
         GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 45);
-        goalEvent.handle();
-        Assert.assertTrue(this.match.getOpponentTeam(this.playerInMatch.getTeamInMatch()).getGoalAgainst() == 3);
+        Assert.assertTrue(goalEvent.getMatch().getHomeTeam().getTeam().getName().equals("Đội Việt Nam"));
+        Assert.assertTrue(goalEvent.getMatch().getAwayTeam().getTeam().getName().equals("Đội Thái Lan"));
     }
 
     @Test(expected = InvalidParameterException.class)
-    public void checkHandleCheckException() {
-        PlayerInMatch benchPlayer = this.teamInMatch.getBenchPlayers().get(0);
-        GoalEvent goalEvent = new GoalEvent(this.match, benchPlayer, 15);
-        goalEvent.handle();
+    public void checkExceptionTime() {
+        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 140);
     }
 }

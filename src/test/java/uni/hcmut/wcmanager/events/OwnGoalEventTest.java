@@ -8,7 +8,7 @@ import uni.hcmut.wcmanager.entities.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
-public class GoalEventTest {
+public class OwnGoalEventTest {
 
     private PlayerInMatch playerInMatch;
     private TeamInMatch teamInMatch;
@@ -44,36 +44,36 @@ public class GoalEventTest {
     }
 
     @Test
-    public void checkHandleForIncrementGoalPlayer() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        Assert.assertTrue(this.playerInMatch.getGoalCount() == 1);
+    public void shouldIncrementGoalPlayer() {
+        OwnGoalEvent ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 15);
+        ownGoalEvent.handle();
+        Assert.assertTrue(this.playerInMatch.getGoalCount() == 0);
     }
 
     @Test
-    public void checkHandleForIncrementGoalTeam() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        Assert.assertTrue(this.teamInMatch.getGoalFor() == 2);
+    public void shouldIncrementAgainstGoalTeam() {
+        OwnGoalEvent ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 15);
+        ownGoalEvent.handle();
+        ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 30);
+        ownGoalEvent.handle();
+        Assert.assertTrue(this.teamInMatch.getGoalAgainst() == 2);
     }
 
     @Test
-    public void checkHandleForConcedeOpponentTeam() {
-        GoalEvent goalEvent = new GoalEvent(this.match, this.playerInMatch, 15);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 30);
-        goalEvent.handle();
-        goalEvent = new GoalEvent(this.match, this.playerInMatch, 45);
-        goalEvent.handle();
-        Assert.assertTrue(this.match.getOpponentTeam(this.playerInMatch.getTeamInMatch()).getGoalAgainst() == 3);
+    public void shouldIncrementGoalForOpponentTeam() {
+        OwnGoalEvent ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 15);
+        ownGoalEvent.handle();
+        ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 30);
+        ownGoalEvent.handle();
+        ownGoalEvent = new OwnGoalEvent(this.match, this.playerInMatch, 45);
+        ownGoalEvent.handle();
+        Assert.assertTrue(this.match.getOpponentTeam(this.playerInMatch.getTeamInMatch()).getGoalFor() == 3);
     }
 
     @Test(expected = InvalidParameterException.class)
     public void checkHandleCheckException() {
         PlayerInMatch benchPlayer = this.teamInMatch.getBenchPlayers().get(0);
-        GoalEvent goalEvent = new GoalEvent(this.match, benchPlayer, 15);
-        goalEvent.handle();
+        OwnGoalEvent ownGoalEvent = new OwnGoalEvent(this.match, benchPlayer, 15);
+        ownGoalEvent.handle();
     }
 }
