@@ -23,7 +23,6 @@ public class YellowCardEvent extends CardEvent {
         TeamInMatch playersTeam = actor.getTeamInMatch();
         playersTeam.incrementYellowCardCount();
 
-        System.out.println(">" + playersTeam.getYellowCardCount());
 
         // If this player has received 2 yellow cards
         if (actor.getYellowCardCount() == 2) {
