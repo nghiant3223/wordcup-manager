@@ -15,6 +15,10 @@ public class Group {
     private List<Match> matches;
     private List<TeamPerformance> teamPerformances;
 
+    public List<TeamPerformance> getTeamPerformances() {
+        return teamPerformances;
+    }
+
     public Group(GroupName name) {
         this.name = name;
 
