@@ -20,10 +20,14 @@ public class GoalEvent extends Event {
 
         actor.incrementGoalCount();
 
+
         TeamInMatch playersTeam = actor.getTeamInMatch();
         playersTeam.score();
 
         TeamInMatch playersOpponentTeam = match.getOpponentTeam(playersTeam);
         playersOpponentTeam.concede();
+
+        System.out.printf("%s: %s has just scored at %d\n",
+                playersTeam.getTeam().getName(), actor.getPlayer().getFullname(), at);
     }
 }

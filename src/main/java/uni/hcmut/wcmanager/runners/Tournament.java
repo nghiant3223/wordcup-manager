@@ -204,8 +204,8 @@ public class Tournament {
             topScorerNames.add(scorer.getFullname());
         }
 
-        System.out.println(String.format(TemplateString.WINNER_RESULT_TEMPLATE,
-                "TOP-SCORERS", String.join(", ", topScorerNames)));
+        System.out.println(String.format(TemplateString.TOP_SCORER_TEMPLATE,
+                "TOP-SCORERS", String.join(", ", topScorerNames), topScorers.get(0).getGoalCount()));
         System.out.println("\nTournament has ended! Thanks for watching ❤\n");
     }
 

@@ -23,5 +23,9 @@ public class OwnGoalEvent extends Event {
 
         TeamInMatch playersOpponentTeam = match.getOpponentTeam(playersTeam);
         playersOpponentTeam.score();
+
+        System.out.printf("%s: %s has just commit own goal at %d\n",
+                playersTeam.getTeam().getName(), actor.getPlayer().getFullname(), at);
+
     }
 }

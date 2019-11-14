@@ -43,6 +43,10 @@ public class PlayerInMatch {
         player.setGoalCount(player.getGoalCount() + 1);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public TeamInMatch getTeamInMatch() {
         return teamInMatch;
     }
