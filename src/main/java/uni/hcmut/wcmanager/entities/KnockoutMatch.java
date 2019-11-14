@@ -22,6 +22,7 @@ public class KnockoutMatch extends Match {
         } catch (InvalidParameterException e) {
             String errorMessage = e.getMessage();
             if (errorMessage.equals("Match has already finished due to silver-goal rule")
+                    || errorMessage.equals("Match has already finished due to lack of players")
                     || errorMessage.equals("Match has already finished") && shootoutGenerator != null
                     || errorMessage.equals("Match cannot be a draw") && shootoutGenerator == null) {
                 throw e;

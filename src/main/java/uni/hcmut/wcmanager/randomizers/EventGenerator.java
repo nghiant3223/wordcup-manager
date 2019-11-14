@@ -74,7 +74,7 @@ public class EventGenerator {
 
             // If match's already finished due to lack of players, we dont generate event anymore
             if (match.isFinished()) {
-                throw new InvalidParameterException("Match has already finished");
+                throw new InvalidParameterException("Match has already finished due to lack of players");
             }
 
             if (e.getAt() >= MatchRule.FULL_DURATION) {
